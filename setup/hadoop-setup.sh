@@ -81,6 +81,11 @@ if hostname | grep -q namenode; then
     /usr/local/hadoop-2.7.3/sbin/hadoop-daemon.sh --script hdfs start namenode
 elif hostname | grep -q resourcemanager; then
     /usr/local/hadoop-2.7.3/sbin/yarn-daemon.sh start resourcemanager
+	cd /etc/apt/sources.list.d
+	sudo wget http://public-repo-1.hortonworks.com/ambari/ubuntu14/2.x/updates/2.2.2.0/ambari.list
+	sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com B9733A7A07513CAD
+	sudo apt-get update 
+	sudo apt-get --assume-yes install ambari-server
 else
     /usr/local/hadoop-2.7.3/sbin/yarn-daemon.sh start nodemanager
     /usr/local/hadoop-2.7.3/sbin/hadoop-daemon.sh --script hdfs start datanode
