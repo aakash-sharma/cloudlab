@@ -1,0 +1,53 @@
+export HADOOP_HOME=/usr/local/hadoop-2.7.3/
+
+sudo $HADOOP_HOME/bin/hadoop fs -mkdir /user/input 
+
+wget https://dumps.wikimedia.org/wikidatawiki/20180520/wikidatawiki-20180520-pages-meta-current2.xml-p235322p585543.bz2
+
+wget --no-check-certificate https://textfiles.com/100/914bbs.txt
+
+sudo $HADOOP_HOME/bin/hadoop fs -put /home/file.txt /user/input 
+
+sudo $HADOOP_HOME/bin/hdfs dfsadmin -report
+
+sudo $HADOOP_HOME/bin/hadoop jar $HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.3.jar wordcount /user/input/ /user/output
+
+wget https://dumps.wikimedia.org/wikidatawiki/20180520/wikidatawiki-20180520-pages-meta-current2.xml-p235322p585543.bz2
+
+wget --no-check-certificate https://textfiles.com/100/914bbs.txt
+
+sudo $HADOOP_HOME/bin/hdfs dfs -ls /user/output
+
+
+
+
+#ambari 
+cd /etc/apt/sources.list.d
+sudo wget http://public-repo-1.hortonworks.com/ambari/ubuntu14/2.x/updates/2.2.2.0/ambari.list
+sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com B9733A7A07513CAD
+sudo apt-get update
+sudo  apt-get install ambari-server
+sudo ambari-server setup
+sudo ambari-server setup
+
+
+#zabbix
+wget http://repo.zabbix.com/zabbix/3.4/ubuntu/pool/main/z/zabbix-release/zabbix-release_3.4-1+xenial_all.deb
+sudo dpkg -i zabbix-release_3.4-1+xenial_all.deb
+sudo apt update
+sudo apt install --assume-yes zabbix-server-pgsql zabbix-frontend-php php-pgsql zabbix-agent
+sudo -u postgres createuser --pwprompt zabbix
+
+Add “local   all             zabbix                                trust” in file /etc/postgresql/9.5/main/pg_hba.conf
+Add “host all all 0.0.0.0/0 md5” in file /etc/postgresql/9.5/main/pg_hba.conf
+sudo /etc/init.d/postgresql restart
+zcat /usr/share/doc/zabbix-server-pgsql*/create.sql.gz | sudo -u zabbix psql zabbix
+Add “DBPassword=zabbix” in file /etc/zabbix/zabbix_server.conf
+Add “php_value date.timezone America/New_York” to /etc/zabbix/apache.conf
+sudo systemctl restart zabbix-server zabbix-agent apache2
+sudo systemctl enable zabbix-server zabbix-agent apache2
+
+#zabbix agent
+sudo apt install zabbix-agent
+sudo service zabbix-agent start
+Add “Server=10.10.1.2” to file /etc/zabbix/zabbix_agentd.conf
