@@ -7,7 +7,7 @@ if test -b /dev/sdb && ! grep -q /dev/sdb /etc/fstab; then
     echo "/dev/sdb	/mnt	ext3	defaults	0	0" >> /etc/fstab
 fi
 
-mkdir /mnt/hadoop
+#mkdir /mnt/hadoop
 chmod 1777 /mnt/hadoop
 
 if ! grep -q fs.defaultFS /usr/local/hadoop-2.7.3/etc/hadoop/core-site.xml; then
@@ -81,11 +81,6 @@ if hostname | grep -q namenode; then
     /usr/local/hadoop-2.7.3/sbin/hadoop-daemon.sh --script hdfs start namenode
 elif hostname | grep -q resourcemanager; then
     /usr/local/hadoop-2.7.3/sbin/yarn-daemon.sh start resourcemanager
-	cd /etc/apt/sources.list.d
-	sudo wget http://public-repo-1.hortonworks.com/ambari/ubuntu14/2.x/updates/2.2.2.0/ambari.list
-	sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com B9733A7A07513CAD
-	sudo apt-get update 
-	sudo apt-get --assume-yes install ambari-server
 else
     /usr/local/hadoop-2.7.3/sbin/yarn-daemon.sh start nodemanager
     /usr/local/hadoop-2.7.3/sbin/hadoop-daemon.sh --script hdfs start datanode
