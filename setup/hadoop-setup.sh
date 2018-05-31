@@ -87,7 +87,8 @@ else
 	sudo apt install zabbix-agent
 	cat >> /etc/zabbix/zabbix_agentd.conf <<EOF
 	Server=10.10.1.2
-	EOF
+EOF
+	sudo service zabbix-agent start
 fi
 
 if hostname | grep -q namenode; then
