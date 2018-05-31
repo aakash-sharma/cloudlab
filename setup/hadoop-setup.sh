@@ -7,7 +7,7 @@ if test -b /dev/sdb && ! grep -q /dev/sdb /etc/fstab; then
     echo "/dev/sdb	/mnt	ext3	defaults	0	0" >> /etc/fstab
 fi
 
-#mkdir /mnt/hadoop
+mkdir /mnt/hadoop
 chmod 1777 /mnt/hadoop
 
 if ! grep -q fs.defaultFS /usr/local/hadoop-2.7.3/etc/hadoop/core-site.xml; then
