@@ -84,6 +84,10 @@ elif hostname | grep -q resourcemanager; then
 else
     /usr/local/hadoop-2.7.3/sbin/yarn-daemon.sh start nodemanager
     /usr/local/hadoop-2.7.3/sbin/hadoop-daemon.sh --script hdfs start datanode
+	sudo apt install zabbix-agent
+	cat >> /etc/zabbix/zabbix_agentd.conf <<EOF
+	Server=10.10.1.2
+	EOF
 fi
 
 if hostname | grep -q namenode; then
