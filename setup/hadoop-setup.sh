@@ -17,6 +17,11 @@ cat > /usr/local/hadoop-2.7.3/etc/hadoop/core-site.xml <<EOF
     <name>fs.defaultFS</name>
     <value>hdfs://namenode:9000/</value>
   </property>
+  <property>
+    <name>hadoop.tmp.dir</name>
+    <value>/mnt/hadoop</value>
+    <final>true</final>
+  </property>
 </configuration>
 EOF
 fi
