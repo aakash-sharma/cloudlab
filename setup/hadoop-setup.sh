@@ -62,6 +62,10 @@ cat > /usr/local/hadoop-2.7.3/etc/hadoop/yarn-site.xml <<EOF
     <name>yarn.nodemanager.resource.percentage-physical-cpu-limit</name>
     <value>90</value>
   </property>
+  <property>
+    <name>yarn.scheduler.minimum-allocation-mb</name>
+    <value>2048</value>
+  </property>
 </configuration>
 EOF
 fi
