@@ -142,7 +142,7 @@ cat > /usr/local/hadoop-2.7.3/etc/hadoop/core-site.xml <<EOF
   </property>
   <property>
     <name>hadoop.tmp.dir</name>
-    <value>/mnt/data</value>
+    <value>/mnt/hadoop</value>
     <final>true</final>
   </property>
 </configuration>
@@ -222,10 +222,8 @@ if hostname | grep -q namenode; then
  #   fi
     /usr/local/hadoop-2.7.3/sbin/hadoop-daemon.sh --script hdfs start namenode
 elif hostname | grep -q resourcemanager; then
-	chmod 1777 /mnt/data
     /usr/local/hadoop-2.7.3/sbin/yarn-daemon.sh start resourcemanager
 else
-	chmod 1777 /mnt/data
     /usr/local/hadoop-2.7.3/sbin/yarn-daemon.sh start nodemanager
     /usr/local/hadoop-2.7.3/sbin/hadoop-daemon.sh --script hdfs start datanode
 	apt install zabbix-agent
