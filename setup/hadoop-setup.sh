@@ -40,8 +40,8 @@ cat > /usr/local/hadoop-2.7.3/etc/hadoop/hdfs-site.xml <<EOF
     <value>/mnt/hadoop</value>
   </property>
   <property> 
-    <name>dfs.replication<name> 
-    <value>1<value> 
+    <name>dfs.replication</name> 
+    <value>1</value> 
   </property>
 </configuration>
 EOF
@@ -97,7 +97,7 @@ cat > /usr/local/hadoop-2.7.3/etc/hadoop/mapred-site.xml <<EOF
 EOF
 #fi
 
-sed -i orig -e 's@^export JAVA_HOME.*@export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64@' -e 's@^export HADOOP_CONF_DIR.*@export HADOOP_CONF_DIR=/usr/local/hadoop-2.7.3/etc/hadoop@' -e 's@^export HADOOP_HOME=/usr/local/hadoop-2.7.3' /usr/local/hadoop-2.7.3/etc/hadoop/hadoop-env.sh
+sed -i orig -e 's@^export JAVA_HOME.*@export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64@' -e 's@^export HADOOP_CONF_DIR.*@export HADOOP_CONF_DIR=/usr/local/hadoop-2.7.3/etc/hadoop@' /usr/local/hadoop-2.7.3/etc/hadoop/hadoop-env.sh
 
 if hostname | grep -q namenode; then
     if ! test -d /mnt/hadoop/current; then
