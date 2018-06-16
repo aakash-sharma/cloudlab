@@ -58,6 +58,10 @@ cat > /usr/local/hadoop-2.7.3/etc/hadoop/yarn-site.xml <<EOF
     <name>yarn.nodemanager.aux-services</name>
     <value>mapreduce_shuffle</value>
   </property>
+  <property>
+    <name>yarn.nodemanager.resource.percentage-physical-cpu-limit</name>
+    <value>90</value>
+  </property>
 </configuration>
 EOF
 fi
@@ -72,6 +76,14 @@ cat > /usr/local/hadoop-2.7.3/etc/hadoop/mapred-site.xml <<EOF
   <property>
     <name>mapreduce.jobhistory.webapp.address</name>
     <value>0.0.0.0:19888</value>
+  </property>
+  <property>
+    <name>mapreduce.map.cpu.vcores</name>
+    <value>4</value>
+  </property>
+  <property>
+    <name>mapreduce.reduce.cpu.vcores</name>
+    <value>2</value>
   </property>
 </configuration>
 EOF
