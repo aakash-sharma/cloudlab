@@ -151,24 +151,14 @@ fi
 
 grep -o -E 'slave[0-9]+$' /etc/hosts > /usr/local/hadoop-2.7.3/etc/hadoop/slaves
 
-#if ! grep -q dfs.namenode.name.dir /usr/local/hadoop-2.7.3/etc/hadoop/hdfs-site.xml; then
 cat > /usr/local/hadoop-2.7.3/etc/hadoop/hdfs-site.xml <<EOF
 <configuration>
-  <property>
-    <name>dfs.namenode.name.dir</name>
-    <value>/mnt/hadoop</value>
-  </property>
-  <property>
-    <name>dfs.datanode.data.dir</name>
-    <value>/mnt/hadoop</value>
-  </property>
   <property> 
     <name>dfs.replication</name> 
     <value>1</value> 
   </property>
 </configuration>
 EOF
-#fi
 
 #if ! grep -q yarn.resourcemanager.hostname /usr/local/hadoop-2.7.3/etc/hadoop/yarn-site.xml; then
 cat > /usr/local/hadoop-2.7.3/etc/hadoop/yarn-site.xml <<EOF
@@ -227,9 +217,9 @@ EOF
 sed -i orig -e 's@^export JAVA_HOME.*@export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64@' -e 's@^export HADOOP_CONF_DIR.*@export HADOOP_CONF_DIR=/usr/local/hadoop-2.7.3/etc/hadoop@' /usr/local/hadoop-2.7.3/etc/hadoop/hadoop-env.sh
 
 if hostname | grep -q namenode; then
-    if ! test -d /mnt/hadoop/current; then
+#    if ! test -d /mnt/hadoop/current; then
 	/usr/local/hadoop-2.7.3/bin/hadoop namenode -format
-    fi
+ #   fi
     /usr/local/hadoop-2.7.3/sbin/hadoop-daemon.sh --script hdfs start namenode
 elif hostname | grep -q resourcemanager; then
 	chmod 1777 /mnt/data
