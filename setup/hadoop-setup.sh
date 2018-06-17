@@ -142,7 +142,7 @@ cat > /usr/local/hadoop-2.7.3/etc/hadoop/core-site.xml <<EOF
   </property>
   <property>
     <name>hadoop.tmp.dir</name>
-    <value>/mnt/hadoop</value>
+    <value>/mnt/data</value>
     <final>true</final>
   </property>
 </configuration>
