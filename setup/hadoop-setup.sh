@@ -210,6 +210,10 @@ cat > /usr/local/hadoop-2.7.3/etc/hadoop/mapred-site.xml <<EOF
     <name>mapreduce.reduce.cpu.vcores</name>
     <value>2</value>
   </property>
+  <property>
+    <name>mapreduce.cluster.local.dir</name>
+    <value>/mnt/data</value>
+  </property>
 </configuration>
 EOF
 #fi
