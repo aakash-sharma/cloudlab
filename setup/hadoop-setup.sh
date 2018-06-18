@@ -214,10 +214,6 @@ cat > /usr/local/hadoop-2.7.3/etc/hadoop/mapred-site.xml <<EOF
     <name>mapreduce.cluster.local.dir</name>
     <value>/mnt/data</value>
   </property>
-  <property>
-    <name>mapreduce.job.reduces</name>
-    <value>0</value>
-  </property>
 </configuration>
 EOF
 #fi
