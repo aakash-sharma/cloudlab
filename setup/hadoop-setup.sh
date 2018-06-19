@@ -157,6 +157,10 @@ cat > /usr/local/hadoop-2.7.3/etc/hadoop/hdfs-site.xml <<EOF
     <name>dfs.replication</name> 
     <value>1</value> 
   </property>
+  <property> 
+    <name>dfs.datanode.dns.interface</name> 
+    <value>eth1</value> 
+  </property>
 </configuration>
 EOF
 
@@ -187,6 +191,18 @@ cat > /usr/local/hadoop-2.7.3/etc/hadoop/yarn-site.xml <<EOF
     <name>yarn.scheduler.minimum-allocation-vcores</name>
     <value>2</value>
   </property>
+  <property>
+    <name>yarn.resourcemanager.bind-host</name>
+    <value>0.0.0.0</value>
+  </property>
+  <property>
+    <name>yarn.nodemanager.bind-host</name>
+    <value>0.0.0.0</value>
+  </property>
+  <property>
+    <name>yarn.timeline-service.bind-host</name>
+    <value>0.0.0.0</value>
+  </property>
 </configuration>
 EOF
 #fi
@@ -213,6 +229,10 @@ cat > /usr/local/hadoop-2.7.3/etc/hadoop/mapred-site.xml <<EOF
   <property>
     <name>mapreduce.cluster.local.dir</name>
     <value>/mnt/data</value>
+  </property>
+  <property>
+    <name>mapreduce.jobhistory.bind-host</name>
+    <value>0.0.0.0</value>
   </property>
 </configuration>
 EOF
