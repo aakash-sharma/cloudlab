@@ -203,6 +203,10 @@ cat > /usr/local/hadoop-2.7.3/etc/hadoop/yarn-site.xml <<EOF
     <name>yarn.timeline-service.bind-host</name>
     <value>0.0.0.0</value>
   </property>
+  <property>
+    <name>yarn.scheduler.maximum-allocation-mb</name>
+    <value>15000</value>
+  </property>
 </configuration>
 EOF
 #fi
@@ -232,11 +236,15 @@ cat > /usr/local/hadoop-2.7.3/etc/hadoop/mapred-site.xml <<EOF
   </property>
   <property>
     <name>mapreduce.reduce.memory.mb</name>
-    <value>16000</value>
+    <value>15000</value>
   </property>
   <property>
     <name>mapreduce.cluster.local.dir</name>
     <value>/mnt/data</value>
+  </property>
+  <property>
+    <name>mapred.reduce.slowstart.completed.maps</name>
+    <value>1</value>
   </property>
   <property>
     <name>mapreduce.jobhistory.bind-host</name>
