@@ -220,11 +220,11 @@ cat > /usr/local/hadoop-2.7.3/etc/hadoop/mapred-site.xml <<EOF
   </property>
   <property>
     <name>mapreduce.map.cpu.vcores</name>
-    <value>4</value>
+    <value>2</value>
   </property>
   <property>
     <name>mapreduce.reduce.cpu.vcores</name>
-    <value>4</value>
+    <value>2</value>
   </property>
   <property>
     <name>mapreduce.reduce.memory.mb</name>
