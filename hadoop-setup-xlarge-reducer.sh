@@ -223,12 +223,16 @@ cat > /usr/local/hadoop-2.7.3/etc/hadoop/mapred-site.xml <<EOF
     <value>4</value>
   </property>
   <property>
+    <name>mapreduce.map.memory.mb</name>
+    <value>8000</value>
+  </property>
+  <property>
     <name>mapreduce.reduce.cpu.vcores</name>
     <value>8</value>
   </property>
   <property>
     <name>mapreduce.reduce.memory.mb</name>
-    <value>16384</value>
+    <value>16000</value>
   </property>
   <property>
     <name>mapreduce.cluster.local.dir</name>
