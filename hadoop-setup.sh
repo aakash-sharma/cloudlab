@@ -155,7 +155,7 @@ cat > /usr/local/hadoop-2.7.3/etc/hadoop/hdfs-site.xml <<EOF
 <configuration>
   <property> 
     <name>dfs.replication</name> 
-    <value>1</value> 
+    <value>2</value> 
   </property>
   <property> 
     <name>dfs.datanode.dns.interface</name> 
