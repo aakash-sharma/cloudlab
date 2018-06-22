@@ -12,7 +12,7 @@ chmod 1777 /mnt/hadoop
 
 cat >> /users/aakashsh/.bashrc <<EOF
 export HADOOP_HOME=/usr/local/hadoop-2.7.3/
-export PATH=$HADOOP_HOME/bin:$PATH
+export PATH=/usr/local/hadoop-2.7.3/bin:$PATH
 EOF
 
 cat > /usr/local/hadoop-2.7.3/etc/hadoop/capacity-scheduler.xml <<EOF
