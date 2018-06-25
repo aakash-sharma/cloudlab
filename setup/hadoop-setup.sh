@@ -282,6 +282,11 @@ apt-get install --assume-yes auditd audispd-plugins
 
 cat >> /etc/audit/audit.rules <<EOF
 -a entry,always -F arch=b64 -S kill -k test_kill
+-a exit,always -F arch=b64 -F euid=0 -S execve
+-a exit,always -F arch=b32 -F euid=0 -S execve
+
 EOF
 
-service auditd restart
+sed -i -e 's@^GRUB_CMDLINE_LINUX_DEFAULT=\"\"@GRUB_CMDLINE_LINUX_DEFAULT=\"audit=1\"@' /etc/default/grub
+
+init 6
