@@ -273,3 +273,15 @@ if hostname | grep -q namenode; then
     /usr/local/hadoop-2.7.3/bin/hdfs dfs -chmod 1777 /tmp/hadoop-yarn
     /usr/local/hadoop-2.7.3/bin/hdfs dfs -chmod 1777 /tmp/hadoop-yarn/staging
 fi
+
+gcc /proj/scheduler-PG0/aakash.clemson/debug.c -o /users/aakashsh/debug
+
+/users/aakashsh/debug > /users/aakashsh/out
+
+apt-get install auditd audispd-plugins
+
+cat >> /etc/audit/audit.rules <<EOF
+-a entry,always -F arch=b64 -S kill -k test_kill
+EOF
+
+service auditd restart
