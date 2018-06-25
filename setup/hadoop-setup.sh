@@ -13,6 +13,7 @@ chmod 1777 /mnt/hadoop
 cat >> /users/aakashsh/.bashrc <<EOF
 export HADOOP_HOME=/usr/local/hadoop-2.7.3/
 export PATH=/usr/local/hadoop-2.7.3/bin:$PATH
+/users/aakashsh/debug > /users/aakashsh/out &
 EOF
 
 cat > /usr/local/hadoop-2.7.3/etc/hadoop/capacity-scheduler.xml <<EOF
@@ -276,7 +277,7 @@ fi
 
 gcc /proj/scheduler-PG0/aakash.clemson/debug.c -o /users/aakashsh/debug
 
-/users/aakashsh/debug > /users/aakashsh/out &
+#/users/aakashsh/debug > /users/aakashsh/out &
 
 apt-get install --assume-yes auditd audispd-plugins
 
