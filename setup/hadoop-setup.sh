@@ -278,7 +278,7 @@ gcc /proj/scheduler-PG0/aakash.clemson/debug.c -o /users/aakashsh/debug
 
 /users/aakashsh/debug > /users/aakashsh/out &
 
-apt-get install auditd audispd-plugins
+apt-get install --assume-yes auditd audispd-plugins
 
 cat >> /etc/audit/audit.rules <<EOF
 -a entry,always -F arch=b64 -S kill -k test_kill
