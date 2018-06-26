@@ -292,6 +292,7 @@ service auditd restart
 
 sed -i -e 's@^GRUB_CMDLINE_LINUX_DEFAULT=\"\"@GRUB_CMDLINE_LINUX_DEFAULT=\"audit=1\"@' /etc/default/grub
 
+cd /users/aakashsh
 git clone https://github.com/brendangregg/perf-tools.git
 /users/aakashsh/perf-tools/execsnoop > /users/aakashsh/execsnoop.out
 #init 6
