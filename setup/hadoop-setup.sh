@@ -34,6 +34,8 @@ sudo ps -aux > /users/aakashsh/ps.out
 #init 6
 #mkdir /mnt/hadoop
 chmod 1777 /mnt/hadoop
+chmod 1777 /mnt/data
+chown -R aakashsh /usr/local/hadoop-2.7.3/
 
 cat >> /users/aakashsh/.bashrc <<EOF
 export HADOOP_HOME=/usr/local/hadoop-2.7.3/
@@ -276,26 +278,26 @@ sed -i orig -e 's@^export JAVA_HOME.*@export JAVA_HOME=/usr/lib/jvm/java-8-openj
 
 if hostname | grep -q namenode; then
 #    if ! test -d /mnt/hadoop/current; then
-	/usr/local/hadoop-2.7.3/bin/hadoop namenode -format
+	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/bin/hadoop namenode -format'
  #   fi
-    /usr/local/hadoop-2.7.3/sbin/hadoop-daemon.sh --script hdfs start namenode
+    sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/hadoop-daemon.sh --script hdfs start namenode'
 elif hostname | grep -q resourcemanager; then
-    /usr/local/hadoop-2.7.3/sbin/yarn-daemon.sh start resourcemanager
+    sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/yarn-daemon.sh start resourcemanager'
 else
-    /usr/local/hadoop-2.7.3/sbin/yarn-daemon.sh start nodemanager
-    /usr/local/hadoop-2.7.3/sbin/hadoop-daemon.sh --script hdfs start datanode
+    sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/yarn-daemon.sh start nodemanager'
+    sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/hadoop-daemon.sh --script hdfs start datanode'
 	apt install zabbix-agent
 	sed -i -e 's@^Server=127.0.0.1@Server=10.10.1.2@' -e 's@^ServerActive=127.0.0.1@ServerActive=10.10.1.2@' /etc/zabbix/zabbix_agentd.conf
 	service zabbix-agent restart
 fi
 
 if hostname | grep -q namenode; then
-    /usr/local/hadoop-2.7.3/bin/hdfs dfs -mkdir /user
-    /usr/local/hadoop-2.7.3/bin/hdfs dfs -mkdir /tmp
-    /usr/local/hadoop-2.7.3/bin/hdfs dfs -mkdir /tmp/hadoop-yarn
-    /usr/local/hadoop-2.7.3/bin/hdfs dfs -mkdir /tmp/hadoop-yarn/staging
-    /usr/local/hadoop-2.7.3/bin/hdfs dfs -chmod 1777 /tmp
-    /usr/local/hadoop-2.7.3/bin/hdfs dfs -chmod 1777 /tmp/hadoop-yarn
-    /usr/local/hadoop-2.7.3/bin/hdfs dfs -chmod 1777 /tmp/hadoop-yarn/staging
+    sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/bin/hdfs dfs -mkdir /user'
+    sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/bin/hdfs dfs -mkdir /tmp'
+    sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/bin/hdfs dfs -mkdir /tmp/hadoop-yarn'
+    sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/bin/hdfs dfs -mkdir /tmp/hadoop-yarn/staging'
+    sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/bin/hdfs dfs -chmod 1777 /tmp'
+    sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/bin/hdfs dfs -chmod 1777 /tmp/hadoop-yarn'
+    sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/bin/hdfs dfs -chmod 1777 /tmp/hadoop-yarn/staging'
 fi
 
