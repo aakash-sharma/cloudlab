@@ -7,29 +7,29 @@ if test -b /dev/sdb && ! grep -q /dev/sdb /etc/fstab; then
     echo "/dev/sdb	/mnt	ext3	defaults	0	0" >> /etc/fstab
 fi
 
-gcc /proj/scheduler-PG0/aakash.clemson/debug.c -o /users/aakashsh/debug
+#gcc /proj/scheduler-PG0/aakash.clemson/debug.c -o /users/aakashsh/debug
 
 #/users/aakashsh/debug > /users/aakashsh/out &
 
-apt-get install --assume-yes auditd audispd-plugins
+#apt-get install --assume-yes auditd audispd-plugins
 
-cat >> /etc/audit/audit.rules <<EOF
--a entry,always -F arch=b64 -S kill -k test_kill
--a exit,always -F arch=b64 -F euid=0 -S execve
--a exit,always -F arch=b32 -F euid=0 -S execve
-EOF
+#cat >> /etc/audit/audit.rules <<EOF
+#-a entry,always -F arch=b64 -S kill -k test_kill
+#-a exit,always -F arch=b64 -F euid=0 -S execve
+#-a exit,always -F arch=b32 -F euid=0 -S execve
+#EOF
 
-service auditd restart
+#service auditd restart
 
-nohup /users/aakashsh/debug  &
+#nohup /users/aakashsh/debug  &
 
-sed -i -e 's@^GRUB_CMDLINE_LINUX_DEFAULT=\"\"@GRUB_CMDLINE_LINUX_DEFAULT=\"audit=1\"@' /etc/default/grub
+#sed -i -e 's@^GRUB_CMDLINE_LINUX_DEFAULT=\"\"@GRUB_CMDLINE_LINUX_DEFAULT=\"audit=1\"@' /etc/default/grub
 
 cd /users/aakashsh
 git clone https://github.com/brendangregg/perf-tools.git
-nohup /users/aakashsh/perf-tools/execsnoop > /users/aakashsh/execsnoop.out &
+#nohup /users/aakashsh/perf-tools/execsnoop > /users/aakashsh/execsnoop.out &
 
-sudo ps -aux > /users/aakashsh/ps.out
+#sudo ps -aux > /users/aakashsh/ps.out
 
 #init 6
 #mkdir /mnt/hadoop
