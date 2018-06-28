@@ -274,6 +274,10 @@ cat > /usr/local/hadoop-2.7.3/etc/hadoop/mapred-site.xml <<EOF
 EOF
 #fi
 
+cat >> /usr/local/hadoop-2.7.3/etc/hadoop/hadoop-env.sh <<EOF
+export HADOOP_ROOT_LOGGER=DEBUG,console
+EOF
+
 sed -i orig -e 's@^export JAVA_HOME.*@export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64@' -e 's@^export HADOOP_CONF_DIR.*@export HADOOP_CONF_DIR=/usr/local/hadoop-2.7.3/etc/hadoop@' /usr/local/hadoop-2.7.3/etc/hadoop/hadoop-env.sh
 
 if hostname | grep -q namenode; then
