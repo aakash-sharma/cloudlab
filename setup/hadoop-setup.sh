@@ -276,6 +276,7 @@ EOF
 
 cat >> /usr/local/hadoop-2.7.3/etc/hadoop/hadoop-env.sh <<EOF
 export HADOOP_ROOT_LOGGER=DEBUG,console
+export HADOOP_HEAPSIZE=4000
 EOF
 
 sed -i orig -e 's@^export JAVA_HOME.*@export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64@' -e 's@^export HADOOP_CONF_DIR.*@export HADOOP_CONF_DIR=/usr/local/hadoop-2.7.3/etc/hadoop@' /usr/local/hadoop-2.7.3/etc/hadoop/hadoop-env.sh
