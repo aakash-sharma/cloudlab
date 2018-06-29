@@ -7,6 +7,16 @@ if test -b /dev/sdb && ! grep -q /dev/sdb /etc/fstab; then
     echo "/dev/sdb	/mnt	ext3	defaults	0	0" >> /etc/fstab
 fi
 
+apt-get install autopoint
+git clone https://gitlab.com/procps-ng/procps.git
+cd procps
+./autogen.sh
+./configure
+make
+mv /bin/kill /bin/kill.bak
+cp kill /bin/kill
+cd ..
+
 #gcc /proj/scheduler-PG0/aakash.clemson/debug.c -o /users/aakashsh/debug
 
 #/users/aakashsh/debug > /users/aakashsh/out &
@@ -25,8 +35,8 @@ fi
 
 #sed -i -e 's@^GRUB_CMDLINE_LINUX_DEFAULT=\"\"@GRUB_CMDLINE_LINUX_DEFAULT=\"audit=1\"@' /etc/default/grub
 
-cd /users/aakashsh
-git clone https://github.com/brendangregg/perf-tools.git
+#cd /users/aakashsh
+#git clone https://github.com/brendangregg/perf-tools.git
 #nohup /users/aakashsh/perf-tools/execsnoop > /users/aakashsh/execsnoop.out &
 
 #sudo ps -aux > /users/aakashsh/ps.out
