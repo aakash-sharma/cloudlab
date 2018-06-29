@@ -8,14 +8,14 @@ if test -b /dev/sdb && ! grep -q /dev/sdb /etc/fstab; then
 fi
 
 apt-get install autopoint
+cd /users/aakashsh
 git clone https://gitlab.com/procps-ng/procps.git
-cd procps
-./autogen.sh
-./configure
+cd /users/aakashsh/procps
+/users/aakashsh/procps/autogen.sh
+/users/aakashsh/procps/configure
 make
 mv /bin/kill /bin/kill.bak
-cp kill /bin/kill
-cd ..
+cp /users/aakashsh/procps/kill /bin/kill
 
 #gcc /proj/scheduler-PG0/aakash.clemson/debug.c -o /users/aakashsh/debug
 
