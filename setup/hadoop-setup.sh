@@ -285,7 +285,7 @@ EOF
 #fi
 
 cat >> /usr/local/hadoop-2.7.3/etc/hadoop/hadoop-env.sh <<EOF
-export HADOOP_ROOT_LOGGER=DEBUG,console
+#export HADOOP_ROOT_LOGGER=DEBUG,console
 export HADOOP_HEAPSIZE=4000
 EOF
 
