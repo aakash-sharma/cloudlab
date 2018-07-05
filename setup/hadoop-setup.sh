@@ -298,6 +298,7 @@ if hostname | grep -q namenode; then
 	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/bin/hadoop namenode -format'
  #   fi
     sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/hadoop-daemon.sh --script hdfs start namenode'
+
 elif hostname | grep -q resourcemanager; then
     sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/yarn-daemon.sh start resourcemanager'
 	cp -pr /proj/scheduler-PG0/aakash/dr-elephant-2.1.7.zip /users/aakashsh/
@@ -315,7 +316,13 @@ elif hostname | grep -q resourcemanager; then
   </fetcher>
 </fetchers>
 EOF
+	debconf-set-selections <<< 'mysql-server mysql-server/root_password password root'
+	debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password root'
+	apt-get update
+	apt-get -y install mysql-server
+	mysql -u root -proot < "/proj/scheduler-PG0/aakash/create_db.sql"
 	sudo PATH=/usr/local/hadoop-2.7.3/bin:$PATH /users/aakashsh/dr-elephant-2.1.7/bin/start.sh /users/aakashsh/dr-elephant-2.1.7/app-conf/
+
 else
     sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/yarn-daemon.sh start nodemanager'
     sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/hadoop-daemon.sh --script hdfs start datanode'
