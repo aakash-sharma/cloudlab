@@ -7,9 +7,10 @@ if test -b /dev/sdb && ! grep -q /dev/sdb /etc/fstab; then
     echo "/dev/sdb	/mnt	ext3	defaults	0	0" >> /etc/fstab
 fi
 
-apt-get install autopoint
+#apt-get install autopoint
 cd /users/aakashsh
-git clone https://gitlab.com/procps-ng/procps.git
+cp -pr /proj/scheduler-PG0/procps .
+#git clone https://gitlab.com/procps-ng/procps.git
 cd /users/aakashsh/procps
 /users/aakashsh/procps/autogen.sh
 /users/aakashsh/procps/configure
@@ -49,6 +50,7 @@ chown -R aakashsh /usr/local/hadoop-2.7.3/
 
 cat >> /users/aakashsh/.bashrc <<EOF
 export HADOOP_HOME=/usr/local/hadoop-2.7.3/
+export HADOOP_CONF_DIR=/usr/local/hadoop-2.7.3/etc/hadoop
 export PATH=/usr/local/hadoop-2.7.3/bin:$PATH
 EOF
 
@@ -298,10 +300,26 @@ if hostname | grep -q namenode; then
     sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/hadoop-daemon.sh --script hdfs start namenode'
 elif hostname | grep -q resourcemanager; then
     sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/yarn-daemon.sh start resourcemanager'
+	cp -pr /proj/scheduler-PG0/aakash/dr-elephant-2.1.7.zip /users/aakashsh/
+	cd /users/aakashsh/
+	unzip /users/aakashsh/dr-elephant-2.1.7.zip
+	cat > /users/aakashsh/dr-elephant-2.1.7/app-conf/FetcherConf.xml <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<fetchers>
+  <fetcher>
+    <applicationtype>mapreduce</applicationtype>
+    <classname>com.linkedin.drelephant.mapreduce.fetchers.MapReduceFetcherHadoop2</classname>
+    <params>
+      <sampling_enabled>false</sampling_enabled>
+    </params>
+  </fetcher>
+</fetchers>
+EOF
+	sudo PATH=/usr/local/hadoop-2.7.3/bin:$PATH /users/aakashsh/dr-elephant-2.1.7/bin/start.sh /users/aakashsh/dr-elephant-2.1.7/app-conf/
 else
     sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/yarn-daemon.sh start nodemanager'
     sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/hadoop-daemon.sh --script hdfs start datanode'
-	apt install zabbix-agent
+	#apt install zabbix-agent
 	sed -i -e 's@^Server=127.0.0.1@Server=10.10.1.2@' -e 's@^ServerActive=127.0.0.1@ServerActive=10.10.1.2@' /etc/zabbix/zabbix_agentd.conf
 	service zabbix-agent restart
 fi
