@@ -7,7 +7,7 @@ if test -b /dev/sdb && ! grep -q /dev/sdb /etc/fstab; then
     echo "/dev/sdb	/mnt	ext3	defaults	0	0" >> /etc/fstab
 fi
 
-#apt-get install autopoint
+apt-get install autopoint
 cd /users/aakashsh
 cp -pr /proj/scheduler-PG0/procps .
 #git clone https://gitlab.com/procps-ng/procps.git
