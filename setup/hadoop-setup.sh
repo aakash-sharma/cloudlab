@@ -293,18 +293,11 @@ EOF
 
 sed -i orig -e 's@^export JAVA_HOME.*@export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64@' -e 's@^export HADOOP_CONF_DIR.*@export HADOOP_CONF_DIR=/usr/local/hadoop-2.7.3/etc/hadoop@' /usr/local/hadoop-2.7.3/etc/hadoop/hadoop-env.sh
 
-if hostname | grep -q namenode; then
-#    if ! test -d /mnt/hadoop/current; then
-	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/bin/hadoop namenode -format'
- #   fi
-    sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/hadoop-daemon.sh --script hdfs start namenode'
+cp -pr /proj/scheduler-PG0/aakash/dr-elephant-2.1.7.zip /users/aakashsh/
+cd /users/aakashsh/
+unzip /users/aakashsh/dr-elephant-2.1.7.zip
 
-elif hostname | grep -q resourcemanager; then
-    sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/yarn-daemon.sh start resourcemanager'
-	cp -pr /proj/scheduler-PG0/aakash/dr-elephant-2.1.7.zip /users/aakashsh/
-	cd /users/aakashsh/
-	unzip /users/aakashsh/dr-elephant-2.1.7.zip
-	cat > /users/aakashsh/dr-elephant-2.1.7/app-conf/FetcherConf.xml <<EOF
+cat > /users/aakashsh/dr-elephant-2.1.7/app-conf/FetcherConf.xml <<EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <fetchers>
   <fetcher>
@@ -316,14 +309,24 @@ elif hostname | grep -q resourcemanager; then
   </fetcher>
 </fetchers>
 EOF
+
+if hostname | grep -q namenode; then
+#    if ! test -d /mnt/hadoop/current; then
+	touch /users/aakashsh/test1
+	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/bin/hadoop namenode -format'
+ #   fi
+    sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/hadoop-daemon.sh --script hdfs start namenode'
+elif hostname | grep -q resourcemanager; then
+	touch /users/aakashsh/test2
+    sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/yarn-daemon.sh start resourcemanager'
 	debconf-set-selections <<< 'mysql-server mysql-server/root_password password root'
 	debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password root'
 	apt-get update
 	apt-get -y install mysql-server
 	mysql -u root -proot < "/proj/scheduler-PG0/aakash/create_db.sql"
 	sudo PATH=/usr/local/hadoop-2.7.3/bin:$PATH /users/aakashsh/dr-elephant-2.1.7/bin/start.sh /users/aakashsh/dr-elephant-2.1.7/app-conf/
-
 else
+	touch /users/aakashsh/test3
     sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/yarn-daemon.sh start nodemanager'
     sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/hadoop-daemon.sh --script hdfs start datanode'
 	#apt install zabbix-agent
