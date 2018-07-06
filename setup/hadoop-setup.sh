@@ -247,6 +247,10 @@ cat > /usr/local/hadoop-2.7.3/etc/hadoop/yarn-site.xml <<EOF
     <name>yarn.timeline-service.bind-host</name>
     <value>0.0.0.0</value>
   </property>
+  <property>
+    <name>yarn.log-aggregation-enable</name>
+    <value>true</value>
+  </property>
 </configuration>
 EOF
 #fi
@@ -289,6 +293,7 @@ EOF
 cat >> /usr/local/hadoop-2.7.3/etc/hadoop/hadoop-env.sh <<EOF
 #export HADOOP_ROOT_LOGGER=DEBUG,console
 export HADOOP_HEAPSIZE=4000
+export YARN_LOG_DIR=$HADOOP_HOME/work/pids
 EOF
 
 sed -i orig -e 's@^export JAVA_HOME.*@export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64@' -e 's@^export HADOOP_CONF_DIR.*@export HADOOP_CONF_DIR=/usr/local/hadoop-2.7.3/etc/hadoop@' /usr/local/hadoop-2.7.3/etc/hadoop/hadoop-env.sh
@@ -318,12 +323,15 @@ if hostname | grep -q namenode; then
     sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/hadoop-daemon.sh --script hdfs start namenode'
 elif hostname | grep -q resourcemanager; then
 	touch /users/aakashsh/test2
-    sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/yarn-daemon.sh start resourcemanager'
-	debconf-set-selections <<< 'mysql-server mysql-server/root_password password root'
-	debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password root'
+	mkdir $HADOOP_HOME/work/pids
+	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/yarn-daemon.sh start resourcemanager'
+    sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/mr-jobhistory-daemon.sh start historyserver'
+	echo 'mysql-server mysql-server/root_password password root' | debconf-set-selections
+	echo 'mysql-server mysql-server/root_password_again password root' | debconf-set-selections
 	apt-get update
 	apt-get -y install mysql-server
 	mysql -u root -proot < "/proj/scheduler-PG0/aakash/create_db.sql"
+	sed -i -e 's/db_password=\"\"/db_password=\"root\"/g' /users/aakashsh/dr-elephant-2.1.7/app-conf/elephant.conf
 	sudo PATH=/usr/local/hadoop-2.7.3/bin:$PATH /users/aakashsh/dr-elephant-2.1.7/bin/start.sh /users/aakashsh/dr-elephant-2.1.7/app-conf/
 else
 	touch /users/aakashsh/test3
