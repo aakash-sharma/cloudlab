@@ -338,7 +338,7 @@ else
 	touch /users/aakashsh/test3
     sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/yarn-daemon.sh start nodemanager'
     sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/hadoop-daemon.sh --script hdfs start datanode'
-	apt install zabbix-agent
+	sudo apt install zabbix-agent
 	sed -i -e 's@^Server=127.0.0.1@Server=10.10.1.2@' -e 's@^ServerActive=127.0.0.1@ServerActive=10.10.1.2@' /etc/zabbix/zabbix_agentd.conf
 	service zabbix-agent restart
 fi
