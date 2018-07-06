@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh -x
 
 if test -b /dev/sdb && ! grep -q /dev/sdb /etc/fstab; then
     mke2fs -F -j /dev/sdb
