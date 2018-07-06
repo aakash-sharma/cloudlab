@@ -9,7 +9,7 @@ fi
 
 apt-get install autopoint
 cd /users/aakashsh
-cp -pr /proj/scheduler-PG0/procps .
+cp -pr /proj/scheduler-PG0/aakash/procps .
 #git clone https://gitlab.com/procps-ng/procps.git
 cd /users/aakashsh/procps
 /users/aakashsh/procps/autogen.sh
