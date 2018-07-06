@@ -326,7 +326,7 @@ elif hostname | grep -q resourcemanager; then
 	sudo -H -u aakashsh bash -c 'mkdir -p /usr/local/hadoop-2.7.3/work/pids'
 	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/yarn-daemon.sh start resourcemanager'
 	chown -R aakashsh /usr/local/hadoop-2.7.3/logs
-    /usr/local/hadoop-2.7.3/sbin/mr-jobhistory-daemon.sh start historyserver
+    sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/mr-jobhistory-daemon.sh start historyserver'
 	echo 'mysql-server mysql-server/root_password password root' | debconf-set-selections
 	echo 'mysql-server mysql-server/root_password_again password root' | debconf-set-selections
 	apt-get update
