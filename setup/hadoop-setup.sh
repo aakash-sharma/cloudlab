@@ -1,4 +1,4 @@
-#!/bin/sh -x
+#!/bin/sh
 
 if test -b /dev/sdb && ! grep -q /dev/sdb /etc/fstab; then
     mke2fs -F -j /dev/sdb
@@ -293,7 +293,7 @@ EOF
 cat >> /usr/local/hadoop-2.7.3/etc/hadoop/hadoop-env.sh <<EOF
 #export HADOOP_ROOT_LOGGER=DEBUG,console
 export HADOOP_HEAPSIZE=4000
-export YARN_LOG_DIR=$HADOOP_HOME/work/pids
+export YARN_LOG_DIR=/usr/local/hadoop-2.7.3/work/pids
 EOF
 
 sed -i orig -e 's@^export JAVA_HOME.*@export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64@' -e 's@^export HADOOP_CONF_DIR.*@export HADOOP_CONF_DIR=/usr/local/hadoop-2.7.3/etc/hadoop@' /usr/local/hadoop-2.7.3/etc/hadoop/hadoop-env.sh
@@ -323,7 +323,7 @@ if hostname | grep -q namenode; then
     sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/hadoop-daemon.sh --script hdfs start namenode'
 elif hostname | grep -q resourcemanager; then
 	touch /users/aakashsh/test2
-	mkdir $HADOOP_HOME/work/pids
+	sudo -H -u aakashsh bash -c 'mkdir -p /usr/local/hadoop-2.7.3/work/pids'
 	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/yarn-daemon.sh start resourcemanager'
     sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/mr-jobhistory-daemon.sh start historyserver'
 	echo 'mysql-server mysql-server/root_password password root' | debconf-set-selections
