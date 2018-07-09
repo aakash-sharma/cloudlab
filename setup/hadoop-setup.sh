@@ -48,6 +48,9 @@ chmod 1777 /mnt/hadoop
 chmod 1777 /mnt/data
 chown -R aakashsh /usr/local/hadoop-2.7.3/
 
+hostname=`hostname | cut -d "." -f 1`
+hostname $hostname
+
 cat >> /users/aakashsh/.bashrc <<EOF
 export HADOOP_HOME=/usr/local/hadoop-2.7.3/
 export HADOOP_CONF_DIR=/usr/local/hadoop-2.7.3/etc/hadoop
