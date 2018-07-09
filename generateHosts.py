@@ -1,4 +1,8 @@
+import sys
+
 def main():
+
+	n = int(sys.argv[1])
 	f = open("zbx_import_hosts.xml", "w")
 	f.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + 
 "<zabbix_export>\n" +
@@ -14,11 +18,11 @@ def main():
 "    </groups>\n" +
 "    <hosts>\n")
 
-	for i in range(10):
+	for i in range(n):
 		j = i + 3
 		f.write("        <host>\n" +
-"            <host>slave" + str(i) + "</host>\n" +
-"            <name>slave" + str(i) + "</name>\n" +
+"            <host>slave"  + str(i) + "</host>\n" +
+"            <name>slave"  + str(i) + "</name>\n" +
 "            <description/>\n" +
 "            <proxy/>\n" +
 "            <status>0</status>\n" +
@@ -66,9 +70,9 @@ def main():
 "                    <history>90d</history>\n" +
 "                    <trends>365d</trends>\n" +
 "                    <status>0</status>\n" +
-"                    <value_type>3</value_type>\n" +
+"                    <value_type>0</value_type>\n" +
 "                    <allowed_hosts/>\n" +
-"                    <units/>\n" +
+"                    <units>bps</units>\n" +
 "                    <snmpv3_contextname/>\n" +
 "                    <snmpv3_securityname/>\n" +
 "                    <snmpv3_securitylevel>0</snmpv3_securitylevel>\n" +
@@ -86,7 +90,11 @@ def main():
 "                    <port/>\n" +
 "                    <description/>\n" +
 "                    <inventory_link>0</inventory_link>\n" +
-"                    <applications/>\n" +
+"                    <applications>\n" +
+"                        <application>\n" +
+"                            <name>Network interfaces</name>\n" +
+"                        </application>\n" +
+"                    </applications>\n" +
 "                    <valuemap/>\n" +
 "                    <logtimefmt/>\n" +
 "                    <preprocessing/>\n" +
@@ -106,7 +114,7 @@ def main():
 "                    <status>0</status>\n" +
 "                    <value_type>3</value_type>\n" +
 "                    <allowed_hosts/>\n" +
-"                    <units/>\n" +
+"                    <units>bps</units>\n" +
 "                    <snmpv3_contextname/>\n" +
 "                    <snmpv3_securityname/>\n" +
 "                    <snmpv3_securitylevel>0</snmpv3_securitylevel>\n" +
@@ -124,7 +132,11 @@ def main():
 "                    <port/>\n" +
 "                    <description/>\n" +
 "                    <inventory_link>0</inventory_link>\n" +
-"                    <applications/>\n" +
+"                    <applications>\n" +
+"                        <application>\n" +
+"                            <name>Network interfaces</name>\n" +
+"                        </application>\n" +
+"                    </applications>\n" +
 "                    <valuemap/>\n" +
 "                    <logtimefmt/>\n" +
 "                    <preprocessing/>\n" +
