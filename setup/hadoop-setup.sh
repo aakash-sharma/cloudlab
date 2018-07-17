@@ -44,7 +44,12 @@ cp /users/aakashsh/procps/kill /bin/kill
 
 #init 6
 #mkdir /mnt/hadoop
-chmod 1777 /mnt/hadoop
+#chmod 1777 /mnt/hadoop
+sudo mkdir -p /mnt/data
+printf “t\\n4\\n83\\nw” | sudo fdisk /dev/xvda
+sudo partprobe
+sudo mkfs.ext4 /dev/xvda4
+sudo mount /dev/xvda4 /mnt/data
 chmod 1777 /mnt/data
 chown -R aakashsh /usr/local/hadoop-2.7.3/
 
@@ -202,7 +207,7 @@ cat > /usr/local/hadoop-2.7.3/etc/hadoop/hdfs-site.xml <<EOF
 <configuration>
   <property> 
     <name>dfs.replication</name> 
-    <value>2</value> 
+    <value>1</value> 
   </property>
   <property> 
     <name>dfs.datanode.dns.interface</name> 
