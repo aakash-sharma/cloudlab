@@ -228,6 +228,18 @@ cat > /usr/local/hadoop-2.7.3/etc/hadoop/yarn-site.xml <<EOF
     <value>0.0.0.0:8088</value>
   </property>
   <property>
+    <name>yarn.resourcemanager.scheduler.class</name>
+    <value>org.apache.hadoop.yarn.server.resourcemanager.scheduler.fair.FairScheduler</value>
+  </property>
+  <property>
+    <name>yarn.scheduler.fair.user-as-default-queue</name>
+    <value>True</value>
+  </property>
+  <property>
+    <name>org.apache.hadoop.yarn.server.resourcemanager.scheduler.drf.SchedulingPolicy</name>
+    <value>True</value>
+  </property>
+  <property>
     <name>yarn.nodemanager.aux-services</name>
     <value>mapreduce_shuffle</value>
   </property>
