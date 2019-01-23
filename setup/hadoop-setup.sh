@@ -215,11 +215,11 @@ cat > /usr/local/hadoop-2.7.3/etc/hadoop/hdfs-site.xml <<EOF
   </property>
   <property> 
     <name>dfs.datanode.name.dir</name> 
-    <value>/mnt/hadoop</value> 
+    <value>/mnt/hadoop/nameNode</value> 
   </property>
   <property> 
     <name>dfs.datanode.data.dir</name> 
-    <value>/mnt/hadoop</value> 
+    <value>/mnt/hadoop/dataNode</value> 
   </property>
 </configuration>
 EOF
@@ -344,6 +344,8 @@ cat > /users/aakashsh/dr-elephant-2.1.7/app-conf/FetcherConf.xml <<EOF
 EOF
 
 if hostname | grep -q namenode; then
+	sudo mkdir -p /mnt/hadoop/nameNode
+	chown -R aakashsh:scheduler-PG0 /mnt/hadoop
 	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/bin/hadoop namenode -format'
     	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/hadoop-daemon.sh --script hdfs start namenode'
 elif hostname | grep -q resourcemanager; then
@@ -359,6 +361,8 @@ elif hostname | grep -q resourcemanager; then
 	sed -i -e 's/db_password=\"\"/db_password=\"root\"/g' /users/aakashsh/dr-elephant-2.1.7/app-conf/elephant.conf
 	sudo PATH=/usr/local/hadoop-2.7.3/bin:$PATH /users/aakashsh/dr-elephant-2.1.7/bin/start.sh /users/aakashsh/dr-elephant-2.1.7/app-conf/
 else
+	sudo mkdir -p /mnt/hadoop/dataNode
+	chown -R aakashsh:scheduler-PG0 /mnt/hadoop
 	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/yarn-daemon.sh start nodemanager'
 	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/hadoop-daemon.sh --script hdfs start datanode'
 	sudo apt install zabbix-agent
