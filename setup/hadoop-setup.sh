@@ -213,6 +213,14 @@ cat > /usr/local/hadoop-2.7.3/etc/hadoop/hdfs-site.xml <<EOF
     <name>dfs.datanode.dns.interface</name> 
     <value>eth1</value> 
   </property>
+  <property> 
+    <name>dfs.datanode.name.dir</name> 
+    <value>/mnt/hadoop</value> 
+  </property>
+  <property> 
+    <name>dfs.datanode.data.dir</name> 
+    <value>/mnt/hadoop</value> 
+  </property>
 </configuration>
 EOF
 
@@ -336,17 +344,13 @@ cat > /users/aakashsh/dr-elephant-2.1.7/app-conf/FetcherConf.xml <<EOF
 EOF
 
 if hostname | grep -q namenode; then
-#    if ! test -d /mnt/hadoop/current; then
-	touch /users/aakashsh/test1
 	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/bin/hadoop namenode -format'
- #   fi
-    sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/hadoop-daemon.sh --script hdfs start namenode'
+    	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/hadoop-daemon.sh --script hdfs start namenode'
 elif hostname | grep -q resourcemanager; then
-	touch /users/aakashsh/test2
 	sudo -H -u aakashsh bash -c 'mkdir -p /usr/local/hadoop-2.7.3/work/pids'
 	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/yarn-daemon.sh start resourcemanager'
 	chown -R aakashsh /usr/local/hadoop-2.7.3/logs
-    sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/mr-jobhistory-daemon.sh start historyserver'
+	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/mr-jobhistory-daemon.sh start historyserver'
 	echo 'mysql-server mysql-server/root_password password root' | debconf-set-selections
 	echo 'mysql-server mysql-server/root_password_again password root' | debconf-set-selections
 	apt-get update
@@ -355,9 +359,8 @@ elif hostname | grep -q resourcemanager; then
 	sed -i -e 's/db_password=\"\"/db_password=\"root\"/g' /users/aakashsh/dr-elephant-2.1.7/app-conf/elephant.conf
 	sudo PATH=/usr/local/hadoop-2.7.3/bin:$PATH /users/aakashsh/dr-elephant-2.1.7/bin/start.sh /users/aakashsh/dr-elephant-2.1.7/app-conf/
 else
-	touch /users/aakashsh/test3
-    sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/yarn-daemon.sh start nodemanager'
-    sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/hadoop-daemon.sh --script hdfs start datanode'
+	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/yarn-daemon.sh start nodemanager'
+	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/hadoop-daemon.sh --script hdfs start datanode'
 	sudo apt install zabbix-agent
 	sed -i -e 's@^Server=127.0.0.1@Server=10.10.1.2@' -e 's@^ServerActive=127.0.0.1@ServerActive=10.10.1.2@' /etc/zabbix/zabbix_agentd.conf
 	service zabbix-agent restart
