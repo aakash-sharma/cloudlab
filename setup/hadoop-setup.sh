@@ -279,6 +279,14 @@ cat > /usr/local/hadoop-2.7.3/etc/hadoop/yarn-site.xml <<EOF
     <name>yarn.log-aggregation-enable</name>
     <value>true</value>
   </property>
+  <property>
+    <name>yarn.node-labels.enabled</name>
+    <value>true</value>
+  </property>
+  <property>
+    <name>yarn.node-labels.fs-store.root-dir</name>
+    <value>file:///users/aakashsh/node-labels</value>
+  </property>
 </configuration>
 EOF
 #fi
@@ -350,6 +358,8 @@ if hostname | grep -q namenode; then
     	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/hadoop-daemon.sh --script hdfs start namenode'
 elif hostname | grep -q resourcemanager; then
 	sudo -H -u aakashsh bash -c 'mkdir -p /usr/local/hadoop-2.7.3/work/pids'
+	sudo -H -u aakashsh bash -c '/users/aakashsh/node-labels'
+	sudo chmod 777 /users/aakashsh/node-labels
 	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/yarn-daemon.sh start resourcemanager'
 	chown -R aakashsh /usr/local/hadoop-2.7.3/logs
 	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/mr-jobhistory-daemon.sh start historyserver'
@@ -362,7 +372,7 @@ elif hostname | grep -q resourcemanager; then
 	sudo PATH=/usr/local/hadoop-2.7.3/bin:$PATH /users/aakashsh/dr-elephant-2.1.7/bin/start.sh /users/aakashsh/dr-elephant-2.1.7/app-conf/
 else
 	sudo mkdir -p /mnt/hadoop/dataNode
-	chown -R aakashsh:scheduler-PG0 /mnt/hadoop
+	sudo chown -R aakashsh:scheduler-PG0 /mnt/hadoop
 	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/yarn-daemon.sh start nodemanager'
 	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/hadoop-daemon.sh --script hdfs start datanode'
 	sudo apt install zabbix-agent
