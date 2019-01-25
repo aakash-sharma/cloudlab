@@ -357,6 +357,66 @@ if hostname | grep -q namenode; then
 	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/bin/hadoop namenode -format'
     	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/hadoop-daemon.sh --script hdfs start namenode'
 elif hostname | grep -q resourcemanager; then
+	cat > /usr/local/hadoop-2.7.3/etc/hadoop/yarn-site.xml <<EOF
+<configuration>
+  <property>
+    <name>yarn.resourcemanager.hostname</name>
+    <value>resourcemanager</value>
+  </property>
+  <property>
+    <name>yarn.resourcemanager.webapp.address</name>
+    <value>0.0.0.0:8088</value>
+  </property>
+  <property>
+    <name>yarn.resourcemanager.scheduler.class</name>
+    <value>org.apache.hadoop.yarn.server.resourcemanager.scheduler.fair.FairScheduler</value>
+  </property>
+  <property>
+    <name>yarn.scheduler.fair.user-as-default-queue</name>
+    <value>True</value>
+  </property>
+  <property>
+    <name>org.apache.hadoop.yarn.server.resourcemanager.scheduler.drf.SchedulingPolicy</name>
+    <value>True</value>
+  </property>
+  <property>
+    <name>yarn.nodemanager.aux-services</name>
+    <value>mapreduce_shuffle</value>
+  </property>
+  <property>
+    <name>yarn.nodemanager.resource.percentage-physical-cpu-limit</name>
+    <value>90</value>
+  </property>
+  <property>
+    <name>yarn.scheduler.minimum-allocation-mb</name>
+    <value>2048</value>
+  </property>
+  <property>
+    <name>yarn.scheduler.minimum-allocation-vcores</name>
+    <value>2</value>
+  </property>
+  <property>
+    <name>yarn.resourcemanager.bind-host</name>
+    <value>0.0.0.0</value>
+  </property>
+  <property>
+    <name>yarn.timeline-service.bind-host</name>
+    <value>0.0.0.0</value>
+  </property>
+  <property>
+    <name>yarn.log-aggregation-enable</name>
+    <value>true</value>
+  </property>
+  <property>
+    <name>yarn.node-labels.enabled</name>
+    <value>true</value>
+  </property>
+  <property>
+    <name>yarn.node-labels.fs-store.root-dir</name>
+    <value>file:///users/aakashsh/node-labels</value>
+  </property>
+</configuration>
+EOF
 	sudo -H -u aakashsh bash -c 'mkdir -p /usr/local/hadoop-2.7.3/work/pids'
 	sudo -H -u aakashsh bash -c '/users/aakashsh/node-labels'
 	sudo chmod 777 /users/aakashsh/node-labels
