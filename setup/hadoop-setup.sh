@@ -279,14 +279,6 @@ cat > /usr/local/hadoop-2.7.3/etc/hadoop/yarn-site.xml <<EOF
     <name>yarn.log-aggregation-enable</name>
     <value>true</value>
   </property>
-  <property>
-    <name>yarn.node-labels.enabled</name>
-    <value>true</value>
-  </property>
-  <property>
-    <name>yarn.node-labels.fs-store.root-dir</name>
-    <value>file:///users/aakashsh/node-labels</value>
-  </property>
 </configuration>
 EOF
 #fi
