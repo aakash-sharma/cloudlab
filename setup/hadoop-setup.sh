@@ -279,15 +279,6 @@ cat > /usr/local/hadoop-2.7.3/etc/hadoop/yarn-site.xml <<EOF
     <name>yarn.log-aggregation-enable</name>
     <value>true</value>
   </property>
-  <property>
-    <name>yarn.node-labels.enabled</name>
-    <value>true</value>
-  </property>
-  <property>
-    <name>yarn.node-labels.fs-store.root-dir</name>
-    <value>file:///users/aakashsh/node-labels</value>
-  </property>
-</configuration>
 EOF
 #fi
 
@@ -352,11 +343,25 @@ cat > /users/aakashsh/dr-elephant-2.1.7/app-conf/FetcherConf.xml <<EOF
 EOF
 
 if hostname | grep -q namenode; then
+cat >> /usr/local/hadoop-2.7.3/etc/hadoop/yarn-site.xml <<EOF
+</configuration>
+EOF
 	sudo mkdir -p /mnt/hadoop/nameNode
 	chown -R aakashsh:scheduler-PG0 /mnt/hadoop
 	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/bin/hadoop namenode -format'
     	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/hadoop-daemon.sh --script hdfs start namenode'
 elif hostname | grep -q resourcemanager; then
+cat >> /usr/local/hadoop-2.7.3/etc/hadoop/yarn-site.xml <<EOF
+  <property>
+    <name>yarn.node-labels.enabled</name>
+    <value>true</value>
+  </property>
+  <property>
+    <name>yarn.node-labels.fs-store.root-dir</name>
+    <value>file:///users/aakashsh/node-labels</value>
+  </property>
+</configuration>
+EOF
 	sudo -H -u aakashsh bash -c 'mkdir -p /usr/local/hadoop-2.7.3/work/pids'
 	sudo -H -u aakashsh bash -c 'mkdir -p /users/aakashsh/node-labels'
 	sudo chmod 777 /users/aakashsh/node-labels
@@ -371,6 +376,9 @@ elif hostname | grep -q resourcemanager; then
 	sed -i -e 's/db_password=\"\"/db_password=\"root\"/g' /users/aakashsh/dr-elephant-2.1.7/app-conf/elephant.conf
 	sudo PATH=/usr/local/hadoop-2.7.3/bin:$PATH /users/aakashsh/dr-elephant-2.1.7/bin/start.sh /users/aakashsh/dr-elephant-2.1.7/app-conf/
 else
+cat >> /usr/local/hadoop-2.7.3/etc/hadoop/yarn-site.xml <<EOF
+</configuration>
+EOF
 	sudo mkdir -p /mnt/hadoop/dataNode
 	sudo chown -R aakashsh:scheduler-PG0 /mnt/hadoop
 	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/yarn-daemon.sh start nodemanager'
