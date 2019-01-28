@@ -45,12 +45,14 @@ cp /users/aakashsh/procps/kill /bin/kill
 #init 6
 #mkdir /mnt/hadoop
 #chmod 1777 /mnt/hadoop
-sudo mkdir -p /mnt/data
-printf “t\\n4\\n83\\nw” | sudo fdisk /dev/xvda
-sudo partprobe
-sudo mkfs.ext4 /dev/xvda4
-sudo mount /dev/xvda4 /mnt/data
-chmod 1777 /mnt/data
+
+# forgot the reason for the following, may be something to do with SSDs
+#sudo mkdir -p /mnt/data
+#printf “t\\n4\\n83\\nw” | sudo fdisk /dev/xvda
+#sudo partprobe
+#sudo mkfs.ext4 /dev/xvda4
+#sudo mount /dev/xvda4 /mnt/data
+#chmod 1777 /mnt/data
 chown -R aakashsh /usr/local/hadoop-2.7.3/
 
 hostname=`hostname | cut -d "." -f 1`
