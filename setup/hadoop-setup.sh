@@ -53,7 +53,9 @@ cp /users/aakashsh/procps/kill /bin/kill
 #sudo mkfs.ext4 /dev/xvda4
 #sudo mount /dev/xvda4 /mnt/data
 #chmod 1777 /mnt/data
-chown -R aakashsh /usr/local/hadoop-2.7.3/
+chown -R aakashsh:scheduler-PG0 /usr/local/hadoop-2.7.3/
+chown -R aakashsh:scheduler-PG0 /mnt/hadoop
+chown -R aakashsh:scheduler-PG0 /mnt/data
 
 hostname=`hostname | cut -d "." -f 1`
 hostname $hostname
@@ -348,8 +350,7 @@ if hostname | grep -q namenode; then
 cat >> /usr/local/hadoop-2.7.3/etc/hadoop/yarn-site.xml <<EOF
 </configuration>
 EOF
-	sudo mkdir -p /mnt/hadoop/nameNode
-	chown -R aakashsh:scheduler-PG0 /mnt/hadoop
+	sudo -H -u aakashsh bash -c 'mkdir -p /mnt/hadoop/nameNode/'
 	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/bin/hadoop namenode -format'
     	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/hadoop-daemon.sh --script hdfs start namenode'
 elif hostname | grep -q resourcemanager; then
@@ -381,7 +382,7 @@ else
 cat >> /usr/local/hadoop-2.7.3/etc/hadoop/yarn-site.xml <<EOF
 </configuration>
 EOF
-	sudo mkdir -p /mnt/hadoop/dataNode
+	sudo -H -u aakashsh bash -c 'mkdir -p /mnt/hadoop/dataNode'
 	sudo chown -R aakashsh:scheduler-PG0 /mnt/hadoop
 	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/yarn-daemon.sh start nodemanager'
 	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.7.3/sbin/hadoop-daemon.sh --script hdfs start datanode'
