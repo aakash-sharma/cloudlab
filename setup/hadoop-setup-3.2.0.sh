@@ -13,6 +13,13 @@ chown -R aakashsh:scheduler-PG0 /mnt/data
 hostname=`hostname | cut -d "." -f 1`
 hostname $hostname
 
+cat >> /users/aakashsh/.bashrc <<EOF
+export HADOOP_HOME=/usr/local/hadoop-3.2.0/
+export HADOOP_CONF_DIR=/usr/local/hadoop-3.2.0/etc/hadoop
+export PATH=/usr/local/hadoop-3.2.0/bin:$PATH
+alias cds="cd /proj/scheduler-PG0/hadoop_scripts"
+EOF
+
 grep -o -E 'slave[0-9]+$' /etc/hosts > /usr/local/hadoop-3.2.0/etc/hadoop/slaves
 
 cat > /usr/local/hadoop-3.2.0/etc/hadoop/yarn-site.xml <<EOF
@@ -93,6 +100,55 @@ cat > /usr/local/hadoop-3.2.0/etc/hadoop/mapred-queues.xml <<EOF
     </queue>
   </queue>
 </allocations>
+EOF
+
+cat >> /usr/local/hadoop-3.2.0/etc/hadoop/hadoop-env.sh <<EOF
+export HADOOP_HOME=/usr/local/hadoop-3.2.0/
+EOF
+
+cat > /usr/local/hadoop-3.2.0/etc/hadoop/mapred-site.xml <<EOF
+<configuration>
+  <property>
+    <name>mapreduce.framework.name</name>
+    <value>yarn</value>
+  </property>
+  <property>
+    <name>mapreduce.jobhistory.webapp.address</name>
+    <value>0.0.0.0:19888</value>
+  </property>
+  <property>
+    <name>mapreduce.map.cpu.vcores</name>
+    <value>2</value>
+  </property>
+  <property>
+    <name>mapreduce.reduce.cpu.vcores</name>
+    <value>2</value>
+  </property>
+  <property>
+    <name>mapreduce.reduce.memory.mb</name>
+    <value>4096</value>
+  </property>
+  <property>
+    <name>mapreduce.cluster.local.dir</name>
+    <value>/mnt/data</value>
+  </property>
+  <property>
+    <name>mapreduce.jobhistory.bind-host</name>
+    <value>0.0.0.0</value>
+  </property>
+<property>
+  <name>yarn.app.mapreduce.am.env</name>
+  <value>HADOOP_MAPRED_HOME=${HADOOP_HOME}</value>
+</property>
+<property>
+  <name>mapreduce.map.env</name>
+  <value>HADOOP_MAPRED_HOME=${HADOOP_HOME}</value>
+</property>
+<property>
+  <name>mapreduce.reduce.env</name>
+  <value>HADOOP_MAPRED_HOME=${HADOOP_HOME}</value>
+</property>
+</configuration>
 EOF
 
 cp -pr /proj/scheduler-PG0/aakash/dr-elephant-2.1.7.zip /users/aakashsh/
