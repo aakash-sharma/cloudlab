@@ -95,13 +95,17 @@ cat > /usr/local/hadoop-3.2.0/etc/hadoop/mapred-queues.xml <<EOF
 </allocations>
 EOF
 
+cp -pr /proj/scheduler-PG0/aakash/dr-elephant-2.1.7.zip /users/aakashsh/
+cd /users/aakashsh/
+unzip /users/aakashsh/dr-elephant-2.1.7.zip
+
 if hostname | grep -q namenode; then
 	cat >> /usr/local/hadoop-3.2.0/etc/hadoop/yarn-site.xml <<EOF
 </configuration>
 EOF
 	sudo -H -u aakashsh bash -c 'mkdir -p /mnt/hadoop/nameNode/'
-	sudo -H -u aakashsh bash -c '/usr/local/hadoop-3.2.0/bin/hadoop namenode -format'
-    	sudo -H -u aakashsh bash -c '/usr/local/hadoop-3.2.0/sbin/hadoop-daemon.sh --script hdfs start namenode'
+	sudo -H -u aakashsh bash -c '/usr/local/hadoop-3.2.0/bin/hdfs namenode -format'
+    	sudo -H -u aakashsh bash -c '/usr/local/hadoop-3.2.0/bin/hdfs --daemon start namenode'
 elif hostname | grep -q resourcemanager; then
 	cat >> /usr/local/hadoop-3.2.0/etc/hadoop/yarn-site.xml <<EOF
   <property>
@@ -114,6 +118,10 @@ elif hostname | grep -q resourcemanager; then
   </property>
 </configuration>
 EOF
+        sudo -H -u aakashsh bash -c 'mkdir -p /users/aakashsh/node-labels'
+	sudo chmod 777 /users/aakashsh/node-labels
+	sudo PATH=/usr/local/hadoop-3.2.0/bin:$PATH /users/aakashsh/dr-elephant-2.1.7/bin/start.sh /users/aakashsh/dr-elephant-2.1.7/app-conf/
+	sudo -H -u aakashsh bash -c '/usr/local/hadoop-3.2.0/bin/yarn --daemon start resourcemanager'
 	sudo -H -u aakashsh bash -c '/usr/local/hadoop-3.2.0/sbin/mr-jobhistory-daemon.sh start historyserver'
 else
 	cat >> /usr/local/hadoop-3.2.0/etc/hadoop/yarn-site.xml <<EOF
@@ -122,7 +130,7 @@ EOF
 	sudo -H -u aakashsh bash -c 'mkdir -p /mnt/hadoop/dataNode'
 	sudo chown -R aakashsh:scheduler-PG0 /mnt/hadoop
 	sudo -H -u aakashsh bash -c '/usr/local/hadoop-3.2.0/sbin/yarn-daemon.sh start nodemanager'
-	sudo -H -u aakashsh bash -c '/usr/local/hadoop-3.2.0/sbin/hadoop-daemon.sh --script hdfs start datanode'
+	sudo -H -u aakashsh bash -c '/usr/local/hadoop-3.2.0/bin/hdfs --daemon start datanode'
 	service zabbix-agent start
 fi
 
