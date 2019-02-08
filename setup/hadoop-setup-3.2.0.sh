@@ -87,8 +87,9 @@ cat > /usr/local/hadoop-3.2.0/etc/hadoop/mapred-queues.xml <<EOF
 <?xml version="1.0"?>
 <allocations>
   <queue name="root">
-    <aclSubmitApps>mapr</aclSubmitApps>                                      
-    <aclAdministerApps>mapr</aclAdministerApps>
+    <aclSubmitApps>*</aclSubmitApps>
+    <aclAdministerApps>*</aclAdministerApps>
+    <label>mapper</label>
     <queue name="mapr">
       <minResources>20000 mb,1 vcores</minResources>
       <maxResources>30000 mb,1000 vcores</maxResources>
@@ -96,7 +97,7 @@ cat > /usr/local/hadoop-3.2.0/etc/hadoop/mapred-queues.xml <<EOF
       <weight>1.0</weight>
       <label>mapper</label>
       <schedulingPolicy>fair</schedulingPolicy>
-      <aclSubmitApps>mapr</aclSubmitApps>
+      <aclSubmitApps>*</aclSubmitApps>
     </queue>
   </queue>
 </allocations>
@@ -138,15 +139,15 @@ cat > /usr/local/hadoop-3.2.0/etc/hadoop/mapred-site.xml <<EOF
   </property>
 <property>
   <name>yarn.app.mapreduce.am.env</name>
-  <value>HADOOP_MAPRED_HOME=${HADOOP_HOME}</value>
+  <value>HADOOP_MAPRED_HOME=\${HADOOP_HOME}</value>
 </property>
 <property>
   <name>mapreduce.map.env</name>
-  <value>HADOOP_MAPRED_HOME=${HADOOP_HOME}</value>
+  <value>HADOOP_MAPRED_HOME=\${HADOOP_HOME}</value>
 </property>
 <property>
   <name>mapreduce.reduce.env</name>
-  <value>HADOOP_MAPRED_HOME=${HADOOP_HOME}</value>
+  <value>HADOOP_MAPRED_HOME=\${HADOOP_HOME}</value>
 </property>
 </configuration>
 EOF
