@@ -34,7 +34,8 @@ cat > /usr/local/hadoop-3.2.0/etc/hadoop/yarn-site.xml <<EOF
   </property>
   <property>
     <name>yarn.resourcemanager.scheduler.class</name>
-    <value>org.apache.hadoop.yarn.server.resourcemanager.scheduler.fair.FairScheduler</value>
+    <value>org.apache.hadoop.yarn.server.resourcemanager.scheduler.capacity.CapacityScheduler</value>
+    <!--<value>org.apache.hadoop.yarn.server.resourcemanager.scheduler.fair.FairScheduler</value>-->
   </property>
   <property>
     <name>yarn.scheduler.fair.user-as-default-queue</name>
@@ -76,12 +77,166 @@ cat > /usr/local/hadoop-3.2.0/etc/hadoop/yarn-site.xml <<EOF
     <name>yarn.log-aggregation-enable</name>
     <value>true</value>
   </property>
-  <property>
+<!--  <property>
     <name>yarn.scheduler.fair.allocation.file</name>
     <value>mapred-queues.xml</value>
-  </property>
+  </property> -->
 EOF
 #fi
+
+cat > /usr/local/hadoop-3.2.0/etc/hadoop/capacity-scheduler.xml <<EOF
+<configuration>
+
+  <property>
+    <name>yarn.scheduler.capacity.maximum-applications</name>
+    <value>10000</value>
+    <description>
+      Maximum number of applications that can be pending and running.
+    </description>
+  </property>
+
+  <property>
+    <name>yarn.scheduler.capacity.maximum-am-resource-percent</name>
+    <value>0.1</value>
+    <description>
+      Maximum percent of resources in the cluster which can be used to run
+      application masters i.e. controls number of concurrent running
+      applications.
+    </description>
+  </property>
+
+  <property>
+    <name>yarn.scheduler.capacity.resource-calculator</name>
+    <value>org.apache.hadoop.yarn.util.resource.DominantResourceCalculator</value>
+    <description>
+      The ResourceCalculator implementation to be used to compare
+      Resources in the scheduler.
+      The default i.e. DefaultResourceCalculator only uses Memory while
+      DominantResourceCalculator uses dominant-resource to compare
+      multi-dimensional resources such as Memory, CPU etc.
+    </description>
+  </property>
+<!– configuration of queue root –>
+  <property>
+    <name>yarn.scheduler.capacity.root.queues</name>
+    <value>A,B,C</value>
+  </property>
+
+  <property>
+    <name>yarn.scheduler.capacity.root.capacity</name>
+    <value>100</value>
+  </property>
+    
+  <property>
+    <name>yarn.scheduler.capacity.root.maximum-capacity</name>
+    <value>100</value>
+  </property>
+
+  <property>
+    <name>yarn.scheduler.capacity.root.accessible-node-labels</name>
+    <value>*</value>
+  </property>
+    
+  <property>
+    <name>yarn.scheduler.capacity.root.accessible-node-labels.X.capacity</name>
+    <value>100</value>
+  </property>
+    
+  <property>
+    <name>yarn.scheduler.capacity.root.accessible-node-labels.X.maximum-capacity</name>
+    <value>100</value>
+  </property>
+    
+  <property>
+    <name>yarn.scheduler.capacity.root.accessible-node-labels.Y.capacity</name>
+    <value>100</value>
+  </property>
+    
+  <property>
+    <name>yarn.scheduler.capacity.root.accessible-node-labels.Y.maximum-capacity</name>
+    <value>100</value>
+  </property>
+
+<!– configuration of queue root.A –>
+  <property>
+    <name>yarn.scheduler.capacity.root.A.capacity</name>
+    <value>40</value>
+  </property>
+
+  <property>
+    <name>yarn.scheduler.capacity.root.A.maximum-capacity</name>
+    <value>100</value>
+  </property>
+
+  <property>
+    <name>yarn.scheduler.capacity.root.A.accessible-node-labels</name>
+    <value>X,Y</value>
+  </property>
+
+  <property>
+    <name>yarn.scheduler.capacity.root.A.default-node-label-expression</name>
+    <value>X</value>
+  </property>
+
+  <property>
+    <name>yarn.scheduler.capacity.root.A.accessible-node-labels.X.capacity</name>
+    <value>100</value>
+  </property>
+
+  <property>
+    <name>yarn.scheduler.capacity.root.A.accessible-node-labels.X.maximum-capacity</name>
+    <value>100</value>
+  </property>
+
+  <property>
+    <name>yarn.scheduler.capacity.root.A.accessible-node-labels.Y.capacity</name>
+    <value>50</value>
+  </property>
+
+  <property>
+    <name>yarn.scheduler.capacity.root.A.accessible-node-labels.Y.maximum-capacity</name>
+    <value>100</value>
+  </property>
+
+<!– configuration of queue root.B –>
+  <property>
+    <name>yarn.scheduler.capacity.root.B.capacity</name>
+    <value>30</value>
+  </property>
+
+  <property>
+    <name>yarn.scheduler.capacity.root.B.maximum-capacity</name>
+    <value>100</value>
+  </property>
+
+  <property>
+    <name>yarn.scheduler.capacity.root.B.accessible-node-labels</name>
+    <value>Y</value>
+  </property>
+
+  <property>
+    <name>yarn.scheduler.capacity.root.B.accessible-node-labels.Y.capacity</name>
+    <value>50</value>
+  </property>
+
+  <property>
+    <name>yarn.scheduler.capacity.root.B.accessible-node-labels.Y.maximum-capacity</name>
+    <value>100</value>
+  </property>
+
+<!– configuration of queue root.C –>
+  <property>
+    <name>yarn.scheduler.capacity.root.C.capacity</name>
+    <value>30</value>
+  </property>
+
+  <property>
+    <name>yarn.scheduler.capacity.root.C.maximum-capacity</name>
+    <value>100</value>
+  </property>
+
+</configuration>
+EOF
 
 cat > /usr/local/hadoop-3.2.0/etc/hadoop/mapred-queues.xml <<EOF
 <?xml version="1.0"?>
@@ -91,13 +246,13 @@ cat > /usr/local/hadoop-3.2.0/etc/hadoop/mapred-queues.xml <<EOF
     <aclAdministerApps>*</aclAdministerApps>
     <label>mapper</label>
     <queue name="mapr">
-      <minResources>20000 mb,1 vcores</minResources>
-      <maxResources>30000 mb,1000 vcores</maxResources>
-      <maxRunningApps>10</maxRunningApps>
-      <weight>1.0</weight>
-      <label>mapper</label>
-      <schedulingPolicy>fair</schedulingPolicy>
-      <aclSubmitApps>*</aclSubmitApps>
+    <minResources>20000 mb,1 vcores</minResources>
+    <maxResources>30000 mb,1000 vcores</maxResources>
+    <maxRunningApps>10</maxRunningApps>
+    <weight>1.0</weight>
+    <label>mapper</label>
+    <schedulingPolicy>fair</schedulingPolicy>
+    <aclSubmitApps>*</aclSubmitApps>
     </queue>
   </queue>
 </allocations>
