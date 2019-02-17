@@ -116,7 +116,7 @@ cat > /usr/local/hadoop-3.2.0/etc/hadoop/capacity-scheduler.xml <<EOF
       multi-dimensional resources such as Memory, CPU etc.
     </description>
   </property>
-<!– configuration of queue root –>
+<!-- configuration of queue root -->
   <property>
     <name>yarn.scheduler.capacity.root.queues</name>
     <value>A,B,C</value>
@@ -157,7 +157,7 @@ cat > /usr/local/hadoop-3.2.0/etc/hadoop/capacity-scheduler.xml <<EOF
     <value>100</value>
   </property>
 
-<!– configuration of queue root.A –>
+<!-- configuration of queue root.A -->
   <property>
     <name>yarn.scheduler.capacity.root.A.capacity</name>
     <value>40</value>
@@ -198,7 +198,7 @@ cat > /usr/local/hadoop-3.2.0/etc/hadoop/capacity-scheduler.xml <<EOF
     <value>100</value>
   </property>
 
-<!– configuration of queue root.B –>
+<!-- configuration of queue root.B -->
   <property>
     <name>yarn.scheduler.capacity.root.B.capacity</name>
     <value>30</value>
@@ -224,7 +224,7 @@ cat > /usr/local/hadoop-3.2.0/etc/hadoop/capacity-scheduler.xml <<EOF
     <value>100</value>
   </property>
 
-<!– configuration of queue root.C –>
+<!-- configuration of queue root.C -->
   <property>
     <name>yarn.scheduler.capacity.root.C.capacity</name>
     <value>30</value>
