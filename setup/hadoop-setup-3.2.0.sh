@@ -7,6 +7,8 @@ if test -b /dev/sdb && ! grep -q /dev/sdb /etc/fstab; then
     echo "/dev/sdb	/mnt	ext3	defaults	0	0" >> /etc/fstab
 fi
 
+apt install cpulimit
+
 chown -R aakashsh:scheduler-PG0 /mnt/hadoop
 chown -R aakashsh:scheduler-PG0 /mnt/data
 
