@@ -19,6 +19,7 @@ cat >> /users/aakashsh/.bashrc <<EOF
 export HADOOP_HOME=/usr/local/hadoop-3.2.0/
 export HADOOP_CONF_DIR=/usr/local/hadoop-3.2.0/etc/hadoop
 export PATH=/usr/local/hadoop-3.2.0/bin:$PATH
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/
 alias cds="cd /proj/scheduler-PG0/hadoop_scripts"
 EOF
 
