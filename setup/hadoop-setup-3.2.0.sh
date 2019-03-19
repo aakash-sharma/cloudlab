@@ -119,17 +119,22 @@ cat > /usr/local/hadoop-3.2.0/etc/hadoop/capacity-scheduler.xml <<EOF
       multi-dimensional resources such as Memory, CPU etc.
     </description>
   </property>
+
 <!-- configuration of queue root -->
+
   <property>
     <name>yarn.scheduler.capacity.root.queues</name>
-    <value>A,B,C</value>
+    <value>default,A,B</value>
+    <description>
+      The queues at the this level (root is the root queue).
+    </description>
   </property>
 
   <property>
     <name>yarn.scheduler.capacity.root.capacity</name>
     <value>100</value>
   </property>
-    
+
   <property>
     <name>yarn.scheduler.capacity.root.maximum-capacity</name>
     <value>100</value>
@@ -139,28 +144,9 @@ cat > /usr/local/hadoop-3.2.0/etc/hadoop/capacity-scheduler.xml <<EOF
     <name>yarn.scheduler.capacity.root.accessible-node-labels</name>
     <value>*</value>
   </property>
-    
-  <property>
-    <name>yarn.scheduler.capacity.root.accessible-node-labels.X.capacity</name>
-    <value>100</value>
-  </property>
-    
-  <property>
-    <name>yarn.scheduler.capacity.root.accessible-node-labels.X.maximum-capacity</name>
-    <value>100</value>
-  </property>
-    
-  <property>
-    <name>yarn.scheduler.capacity.root.accessible-node-labels.Y.capacity</name>
-    <value>100</value>
-  </property>
-    
-  <property>
-    <name>yarn.scheduler.capacity.root.accessible-node-labels.Y.maximum-capacity</name>
-    <value>100</value>
-  </property>
 
-<!-- configuration of queue root.A -->
+<!-- configuration of queue root.A 
+-->
   <property>
     <name>yarn.scheduler.capacity.root.A.capacity</name>
     <value>40</value>
@@ -173,9 +159,8 @@ cat > /usr/local/hadoop-3.2.0/etc/hadoop/capacity-scheduler.xml <<EOF
 
   <property>
     <name>yarn.scheduler.capacity.root.A.accessible-node-labels</name>
-    <value>X,Y</value>
+    <value>X</value>
   </property>
-
   <property>
     <name>yarn.scheduler.capacity.root.A.default-node-label-expression</name>
     <value>X</value>
@@ -183,7 +168,7 @@ cat > /usr/local/hadoop-3.2.0/etc/hadoop/capacity-scheduler.xml <<EOF
 
   <property>
     <name>yarn.scheduler.capacity.root.A.accessible-node-labels.X.capacity</name>
-    <value>100</value>
+    <value>10</value>
   </property>
 
   <property>
@@ -191,17 +176,8 @@ cat > /usr/local/hadoop-3.2.0/etc/hadoop/capacity-scheduler.xml <<EOF
     <value>100</value>
   </property>
 
-  <property>
-    <name>yarn.scheduler.capacity.root.A.accessible-node-labels.Y.capacity</name>
-    <value>50</value>
-  </property>
-
-  <property>
-    <name>yarn.scheduler.capacity.root.A.accessible-node-labels.Y.maximum-capacity</name>
-    <value>100</value>
-  </property>
-
-<!-- configuration of queue root.B -->
+<!-- configuration of queue root.B 
+-->
   <property>
     <name>yarn.scheduler.capacity.root.B.capacity</name>
     <value>30</value>
@@ -219,26 +195,83 @@ cat > /usr/local/hadoop-3.2.0/etc/hadoop/capacity-scheduler.xml <<EOF
 
   <property>
     <name>yarn.scheduler.capacity.root.B.accessible-node-labels.Y.capacity</name>
-    <value>50</value>
+    <value>10</value>
   </property>
 
   <property>
     <name>yarn.scheduler.capacity.root.B.accessible-node-labels.Y.maximum-capacity</name>
     <value>100</value>
   </property>
-
-<!-- configuration of queue root.C -->
+<!-- configuration of queue root.default
+-->
   <property>
-    <name>yarn.scheduler.capacity.root.C.capacity</name>
+    <name>yarn.scheduler.capacity.root.default.capacity</name>
     <value>30</value>
   </property>
 
   <property>
-    <name>yarn.scheduler.capacity.root.C.maximum-capacity</name>
+    <name>yarn.scheduler.capacity.root.default.maximum-capacity</name>
     <value>100</value>
   </property>
 
+  <property>
+    <name>yarn.scheduler.capacity.root.default.state</name>
+    <value>RUNNING</value>
+    <description>
+      The state of the default queue. State can be one of RUNNING or STOPPED.
+    </description>
+  </property>
+
+  <property>
+    <name>yarn.scheduler.capacity.root.default.acl_submit_applications</name>
+    <value>*</value>
+    <description>
+      The ACL of who can submit jobs to the default queue.
+    </description>
+  </property>
+
+  <property>
+    <name>yarn.scheduler.capacity.root.default.acl_administer_queue</name>
+    <value>*</value>
+    <description>
+      The ACL of who can administer jobs on the default queue.
+    </description>
+  </property>
+
+  <property>
+    <name>yarn.scheduler.capacity.root.default.accessible-node-labels</name>
+    <value>X,Y</value>
+  </property>
+
+  <property>
+    <name>yarn.scheduler.capacity.root.default.default-node-label-expression</name>
+    <value>X</value>
+  </property>
+  <property>
+    <name>yarn.scheduler.capacity.root.default.accessible-node-labels.X.maximum-capacity</name>
+    <value>100</value>
+  </property>
+
+  <property>
+    <name>yarn.scheduler.capacity.root.default.accessible-node-labels.Y.capacity</name>
+    <value>10</value>
+  </property>
+
+  <property>
+    <name>yarn.scheduler.capacity.root.default.accessible-node-labels.Y.maximum-capacity</name>
+    <value>100</value>
+  </property>
+
+  <property>
+    <name>yarn.scheduler.capacity.root.default.user-limit-factor</name>
+    <value>1</value>
+    <description>
+      Default queue user limit a percentage from 0.0 to 1.0.
+    </description>
+  </property>
+
 </configuration>
+
 EOF
 
 cat > /usr/local/hadoop-3.2.0/etc/hadoop/mapred-queues.xml <<EOF
