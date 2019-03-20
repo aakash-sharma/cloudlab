@@ -100,7 +100,7 @@ cat > /usr/local/hadoop-3.2.0/etc/hadoop/capacity-scheduler.xml <<EOF
 
   <property>
     <name>yarn.scheduler.capacity.maximum-am-resource-percent</name>
-    <value>0.1</value>
+    <value>0.2</value>
     <description>
       Maximum percent of resources in the cluster which can be used to run
       application masters i.e. controls number of concurrent running
@@ -145,11 +145,32 @@ cat > /usr/local/hadoop-3.2.0/etc/hadoop/capacity-scheduler.xml <<EOF
     <value>*</value>
   </property>
 
+  <property>
+    <name>yarn.scheduler.capacity.root.accessible-node-labels.X.capacity</name>
+    <value>100</value>
+  </property>
+
+  <property>
+    <name>yarn.scheduler.capacity.root.accessible-node-labels.X.maximum-capacity</name>
+    <value>100</value>
+  </property>
+
+  <property>
+    <name>yarn.scheduler.capacity.root.accessible-node-labels.Y.capacity</name>
+    <value>100</value>
+  </property>
+
+  <property>
+    <name>yarn.scheduler.capacity.root.accessible-node-labels.Y.maximum-capacity</name>
+    <value>100</value>
+  </property>
+
+
 <!-- configuration of queue root.A 
 -->
   <property>
     <name>yarn.scheduler.capacity.root.A.capacity</name>
-    <value>40</value>
+    <value>30</value>
   </property>
 
   <property>
@@ -161,6 +182,7 @@ cat > /usr/local/hadoop-3.2.0/etc/hadoop/capacity-scheduler.xml <<EOF
     <name>yarn.scheduler.capacity.root.A.accessible-node-labels</name>
     <value>X</value>
   </property>
+
   <property>
     <name>yarn.scheduler.capacity.root.A.default-node-label-expression</name>
     <value>X</value>
@@ -168,7 +190,7 @@ cat > /usr/local/hadoop-3.2.0/etc/hadoop/capacity-scheduler.xml <<EOF
 
   <property>
     <name>yarn.scheduler.capacity.root.A.accessible-node-labels.X.capacity</name>
-    <value>10</value>
+    <value>50</value>
   </property>
 
   <property>
@@ -192,10 +214,15 @@ cat > /usr/local/hadoop-3.2.0/etc/hadoop/capacity-scheduler.xml <<EOF
     <name>yarn.scheduler.capacity.root.B.accessible-node-labels</name>
     <value>Y</value>
   </property>
+  
+  <property>
+    <name>yarn.scheduler.capacity.root.B.default-node-label-expression</name>
+    <value>Y</value>
+  </property>
 
   <property>
     <name>yarn.scheduler.capacity.root.B.accessible-node-labels.Y.capacity</name>
-    <value>10</value>
+    <value>50</value>
   </property>
 
   <property>
@@ -206,7 +233,7 @@ cat > /usr/local/hadoop-3.2.0/etc/hadoop/capacity-scheduler.xml <<EOF
 -->
   <property>
     <name>yarn.scheduler.capacity.root.default.capacity</name>
-    <value>30</value>
+    <value>40</value>
   </property>
 
   <property>
@@ -242,11 +269,12 @@ cat > /usr/local/hadoop-3.2.0/etc/hadoop/capacity-scheduler.xml <<EOF
     <name>yarn.scheduler.capacity.root.default.accessible-node-labels</name>
     <value>X,Y</value>
   </property>
-
+  
   <property>
-    <name>yarn.scheduler.capacity.root.default.default-node-label-expression</name>
-    <value>X</value>
+    <name>yarn.scheduler.capacity.root.default.accessible-node-labels.X.capacity</name>
+    <value>50</value>
   </property>
+
   <property>
     <name>yarn.scheduler.capacity.root.default.accessible-node-labels.X.maximum-capacity</name>
     <value>100</value>
@@ -254,7 +282,7 @@ cat > /usr/local/hadoop-3.2.0/etc/hadoop/capacity-scheduler.xml <<EOF
 
   <property>
     <name>yarn.scheduler.capacity.root.default.accessible-node-labels.Y.capacity</name>
-    <value>10</value>
+    <value>50</value>
   </property>
 
   <property>
