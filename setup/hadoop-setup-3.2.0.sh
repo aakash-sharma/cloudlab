@@ -8,6 +8,10 @@ if test -b /dev/sdb && ! grep -q /dev/sdb /etc/fstab; then
 fi
 
 apt install cpulimit
+apt-get -y purge --auto-remove openjdk*
+apt-get -y update
+apt-get -y install openjdk-8-jdk
+apt-get -y install maven
 
 chown -R aakashsh:scheduler-PG0 /mnt/hadoop
 chown -R aakashsh:scheduler-PG0 /mnt/data
@@ -338,11 +342,15 @@ cat > /usr/local/hadoop-3.2.0/etc/hadoop/mapred-site.xml <<EOF
   </property>
   <property>
     <name>mapreduce.map.cpu.vcores</name>
-    <value>2</value>
+    <value>4</value>
+  </property>
+  <property>
+    <name>mapreduce.map.memory.mb</name>
+    <value>2048</value>
   </property>
   <property>
     <name>mapreduce.reduce.cpu.vcores</name>
-    <value>2</value>
+    <value>4</value>
   </property>
   <property>
     <name>mapreduce.reduce.memory.mb</name>
