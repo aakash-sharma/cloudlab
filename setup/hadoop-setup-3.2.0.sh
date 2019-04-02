@@ -238,6 +238,16 @@ cat > /usr/local/hadoop-3.2.0/etc/hadoop/capacity-scheduler.xml <<EOF
     </description>
   </property>
 
+  <property>
+    <name>yarn.scheduler.capacity.root.default.ordering-policy</name>
+    <value>fair</value>
+  </property>
+
+  <property>
+    <name>yarn.scheduler.capacity.root.default.ordering-policy.fair.enable-size-based-weight</name>
+    <value>true</value>
+  </property>
+
 </configuration>
 
 EOF
