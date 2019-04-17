@@ -274,6 +274,7 @@ EOF
 
 cat >> /usr/local/hadoop-3.2.0/etc/hadoop/hadoop-env.sh <<EOF
 export HADOOP_HOME=/usr/local/hadoop-3.2.0/
+export HADOOP_ROOT_LOGGER=INFO,console
 EOF
 
 cat > /usr/local/hadoop-3.2.0/etc/hadoop/mapred-site.xml <<EOF
