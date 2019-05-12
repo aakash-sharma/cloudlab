@@ -7,6 +7,8 @@ if test -b /dev/sdb && ! grep -q /dev/sdb /etc/fstab; then
     echo "/dev/sdb	/mnt	ext3	defaults	0	0" >> /etc/fstab
 fi
 
+mkdir /usr/local/hadoop-2.8.5/work
+chown -R aakashsh:scheduler-PG0 /usr/local/hadoop-2.8.5/
 chown -R aakashsh:scheduler-PG0 /mnt/hadoop
 chown -R aakashsh:scheduler-PG0 /mnt/data
 
@@ -330,7 +332,7 @@ if hostname | grep -q namenode; then
 EOF
 	sudo -H -u aakashsh bash -c 'mkdir -p /mnt/hadoop/nameNode/'
 	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.8.5/bin/hdfs namenode -format'
-    	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.8.5/bin/hdfs --daemon start namenode'
+    	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.8.5/sbin/hadoop-daemon.sh start namenode'
 elif hostname | grep -q resourcemanager; then
 	cat >> /usr/local/hadoop-2.8.5/etc/hadoop/yarn-site.xml <<EOF
   <property>
@@ -346,7 +348,7 @@ EOF
         sudo -H -u aakashsh bash -c 'mkdir -p /users/aakashsh/node-labels'
 	sudo chmod 777 /users/aakashsh/node-labels
 	sudo PATH=/usr/local/hadoop-2.8.5/bin:$PATH /users/aakashsh/dr-elephant-2.1.7/bin/start.sh /users/aakashsh/dr-elephant-2.1.7/app-conf/
-	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.8.5/bin/yarn --daemon start resourcemanager'
+	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.8.5/sbin/yarn-daemon.sh start resourcemanager'
 	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.8.5/sbin/mr-jobhistory-daemon.sh start historyserver'
 else
 	cat >> /usr/local/hadoop-2.8.5/etc/hadoop/yarn-site.xml <<EOF
@@ -355,7 +357,7 @@ EOF
 	sudo -H -u aakashsh bash -c 'mkdir -p /mnt/hadoop/dataNode'
 	sudo chown -R aakashsh:scheduler-PG0 /mnt/hadoop
 	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.8.5/sbin/yarn-daemon.sh start nodemanager'
-	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.8.5/bin/hdfs --daemon start datanode'
+	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.8.5/sbin/hadoop-daemon.sh start datanode'
 	service zabbix-agent start
 fi
 
