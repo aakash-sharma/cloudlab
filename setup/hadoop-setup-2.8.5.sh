@@ -285,7 +285,7 @@ cat > /usr/local/hadoop-2.8.5/etc/hadoop/mapred-site.xml <<EOF
   </property>
   <property>
     <name>mapreduce.map.cpu.vcores</name>
-    <value>4</value>
+    <value>2</value>
   </property>
   <property>
     <name>mapreduce.map.memory.mb</name>
@@ -293,11 +293,11 @@ cat > /usr/local/hadoop-2.8.5/etc/hadoop/mapred-site.xml <<EOF
   </property>
   <property>
     <name>mapreduce.reduce.cpu.vcores</name>
-    <value>4</value>
+    <value>8</value>
   </property>
   <property>
     <name>mapreduce.reduce.memory.mb</name>
-    <value>4096</value>
+    <value>8192</value>
   </property>
   <property>
     <name>mapreduce.cluster.local.dir</name>
@@ -322,9 +322,6 @@ cat > /usr/local/hadoop-2.8.5/etc/hadoop/mapred-site.xml <<EOF
 </configuration>
 EOF
 
-cp -pr /proj/scheduler-PG0/aakash/dr-elephant-2.1.7.zip /users/aakashsh/
-cd /users/aakashsh/
-unzip /users/aakashsh/dr-elephant-2.1.7.zip
 
 if hostname | grep -q namenode; then
 	cat >> /usr/local/hadoop-2.8.5/etc/hadoop/yarn-site.xml <<EOF
@@ -347,9 +344,13 @@ elif hostname | grep -q resourcemanager; then
 EOF
         sudo -H -u aakashsh bash -c 'mkdir -p /users/aakashsh/node-labels'
 	sudo chmod 777 /users/aakashsh/node-labels
-	sudo PATH=/usr/local/hadoop-2.8.5/bin:$PATH /users/aakashsh/dr-elephant-2.1.7/bin/start.sh /users/aakashsh/dr-elephant-2.1.7/app-conf/
 	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.8.5/sbin/yarn-daemon.sh start resourcemanager'
 	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.8.5/sbin/mr-jobhistory-daemon.sh start historyserver'
+	sudo -H -u aakashsh bash -c 'cp -pr /proj/scheduler-PG0/aakash/dr-elephant-2.1.7.zip /users/aakashsh/'
+	cd /users/aakashsh/
+	sudo -H -u aakashsh bash -c 'unzip /users/aakashsh/dr-elephant-2.1.7.zip'
+	sudo PATH=/usr/local/hadoop-2.8.5/bin:$PATH /users/aakashsh/dr-elephant-2.1.7/bin/start.sh /users/aakashsh/dr-elephant-2.1.7/app-conf/
+	#sudo -H -u aakashsh bash -c 'PATH=/usr/local/hadoop-2.8.5/bin:$PATH /users/aakashsh/dr-elephant-2.1.7/bin/start.sh /users/aakashsh/dr-elephant-2.1.7/app-conf/'
 else
 	cat >> /usr/local/hadoop-2.8.5/etc/hadoop/yarn-site.xml <<EOF
 </configuration>
