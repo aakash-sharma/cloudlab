@@ -270,7 +270,7 @@ EOF
 
 cat >> /usr/local/hadoop-2.8.5/etc/hadoop/hadoop-env.sh <<EOF
 export HADOOP_HOME=/usr/local/hadoop-2.8.5/
-export YARN_LOG_DIR=$HADOOP_HOME/work/pids
+export YARN_LOG_DIR=\$HADOOP_HOME/work/pids
 export HADOOP_ROOT_LOGGER=INFO,console
 EOF
 
