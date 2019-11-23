@@ -272,6 +272,7 @@ cat >> /usr/local/hadoop-2.8.5/etc/hadoop/hadoop-env.sh <<EOF
 export HADOOP_HOME=/usr/local/hadoop-2.8.5/
 export YARN_LOG_DIR=\$HADOOP_HOME/work/pids
 export HADOOP_ROOT_LOGGER=INFO,console
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/
 EOF
 
 cat > /usr/local/hadoop-2.8.5/etc/hadoop/mapred-site.xml <<EOF
@@ -286,7 +287,7 @@ cat > /usr/local/hadoop-2.8.5/etc/hadoop/mapred-site.xml <<EOF
   </property>
   <property>
     <name>mapreduce.map.cpu.vcores</name>
-    <value>2</value>
+    <value>1</value>
   </property>
   <property>
     <name>mapreduce.map.memory.mb</name>
@@ -294,7 +295,7 @@ cat > /usr/local/hadoop-2.8.5/etc/hadoop/mapred-site.xml <<EOF
   </property>
   <property>
     <name>mapreduce.reduce.cpu.vcores</name>
-    <value>4</value>
+    <value>1</value>
   </property>
   <property>
     <name>mapreduce.reduce.memory.mb</name>
