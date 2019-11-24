@@ -327,52 +327,151 @@ export HADOOP_DATANODE_HEAPSIZE=1105
 export HADOOP_JOB_HISTORYSERVER_HEAPSIZE=2744
 EOF
 
+cat >> /usr/local/hadoop-2.8.5/etc/hadoop/hadoop-env.sh <<EOF
+export YARN_NODEMANAGER_HEAPSIZE=2048
+export YARN_RESOURCEMANAGER_HEAPSIZE=2744
+EOF
+
 cat > /usr/local/hadoop-2.8.5/etc/hadoop/mapred-site.xml <<EOF
 <configuration>
   <property>
     <name>mapreduce.framework.name</name>
     <value>yarn</value>
   </property>
+
   <property>
     <name>mapreduce.jobhistory.webapp.address</name>
     <value>0.0.0.0:19888</value>
   </property>
-  <property>
-    <name>mapreduce.map.cpu.vcores</name>
-    <value>1</value>
-  </property>
-  <property>
-    <name>mapreduce.map.memory.mb</name>
-    <value>2048</value>
-  </property>
-  <property>
-    <name>mapreduce.reduce.cpu.vcores</name>
-    <value>1</value>
-  </property>
-  <property>
-    <name>mapreduce.reduce.memory.mb</name>
-    <value>8192</value>
-  </property>
+
   <property>
     <name>mapreduce.cluster.local.dir</name>
     <value>/mnt/data</value>
   </property>
+  
   <property>
     <name>mapreduce.jobhistory.bind-host</name>
     <value>0.0.0.0</value>
   </property>
-<property>
-  <name>yarn.app.mapreduce.am.env</name>
-  <value>HADOOP_MAPRED_HOME=\${HADOOP_HOME}</value>
-</property>
-<property>
-  <name>mapreduce.map.env</name>
-  <value>HADOOP_MAPRED_HOME=\${HADOOP_HOME}</value>
-</property>
-<property>
-  <name>mapreduce.reduce.env</name>
-  <value>HADOOP_MAPRED_HOME=\${HADOOP_HOME}</value>
-</property>
+
+<!-- Memory settings -->
+
+  <property>
+    <name>mapreduce.map.java.opts</name>
+    <value>-Xmx2458m</value>
+  </property>
+
+  <property>
+    <name>mapreduce.reduce.java.opts</name>
+    <value>-Xmx4916m</value>
+  </property>
+
+  <property>
+    <name>mapreduce.task.io.sort.mb</name>
+    <value>200</value>
+  </property>
+
+  <property>
+    <name>mapreduce.task.io.sort.factor</name>
+    <value>48</value>
+  </property>
+
+  <property>
+    <name>mapreduce.tasktracker.http.threads</name>
+    <value>60</value>
+  </property>
+
+  <property>
+    <name>mapreduce.output.fileoutputformat.compress.type</name>
+    <value>BLOCK</value>
+    <description>If the job outputs are to compressed as
+    SequenceFiles, how should they be compressed? Should be one of
+    NONE, RECORD or BLOCK.</description>
+  </property>
+
+  <property>
+    <name>mapreduce.map.output.compress.codec</name>
+    <value>org.apache.hadoop.io.compress.SnappyCodec</value>
+  </property>
+
+  <property>
+    <name>mapreduce.job.maps</name>
+    <value>160</value>
+  </property>
+
+  <property>
+    <name>mapreduce.job.jvm.numtasks</name>
+    <value>20</value>
+  </property>
+
+  <property>
+    <name>mapreduce.map.output.compress</name>
+    <value>true</value>
+  </property>
+
+  <property>
+    <name>mapreduce.map.memory.mb</name>
+    <value>3072</value>
+  </property>
+
+  <property>
+    <name>mapred.output.committer.class</name>
+    <value>org.apache.hadoop.mapred.DirectFileOutputCommitter</value>
+  </property>
+
+  <property>
+    <name>mapreduce.job.reduces</name>
+    <value>60</value>
+  </property>
+
+  <property>
+    <name>yarn.app.mapreduce.am.command-opts</name>
+    <value>-Xmx4915m</value>
+  </property>
+
+  <property>
+    <name>mapreduce.reduce.memory.mb</name>
+    <value>6144</value>
+  </property>
+
+  <property>
+    <name>yarn.app.mapreduce.am.job.task.listener.thread-count</name>
+    <value>60</value>
+  </property>
+
+  <property>
+    <name>yarn.app.mapreduce.am.resource.mb</name>
+    <value>6144</value>
+  </property>
+
+  <property>
+    <name>yarn.app.mapreduce.am.env</name>
+    <value>HADOOP_MAPRED_HOME=\${HADOOP_HOME}</value>
+  </property>
+  
+  <property>
+    <name>mapreduce.map.env</name>
+    <value>HADOOP_MAPRED_HOME=\${HADOOP_HOME}</value>
+  </property>
+
+  <property>
+    <name>mapreduce.reduce.env</name>
+    <value>HADOOP_MAPRED_HOME=\${HADOOP_HOME}</value>
+  </property>
+
+  <property>
+    <name>mapreduce.application.classpath</name>
+    <value>
+      \${HADOOP_MAPRED_HOME}/share/hadoop/mapreduce/*,
+      \${HADOOP_MAPRED_HOME}/share/hadoop/mapreduce/lib/*
+    </value>
+  </property>
+
+  <property>
+    <name>mapred.local.dir</name>
+    <value>/mnt/data</value>
+  </property>
+
 </configuration>
 EOF
 
