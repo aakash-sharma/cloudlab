@@ -322,10 +322,9 @@ cat > /usr/local/hadoop-2.8.5/etc/hadoop/mapred-queues.xml <<EOF
 EOF
 
 cat >> /usr/local/hadoop-2.8.5/etc/hadoop/hadoop-env.sh <<EOF
-export HADOOP_HOME=/usr/local/hadoop-2.8.5/
-export YARN_LOG_DIR=\$HADOOP_HOME/work/pids
-export HADOOP_ROOT_LOGGER=INFO,console
-export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/
+export HADOOP_NAMENODE_HEAPSIZE=3481
+export HADOOP_DATANODE_HEAPSIZE=1105
+export HADOOP_JOB_HISTORYSERVER_HEAPSIZE=2744
 EOF
 
 cat > /usr/local/hadoop-2.8.5/etc/hadoop/mapred-site.xml <<EOF
