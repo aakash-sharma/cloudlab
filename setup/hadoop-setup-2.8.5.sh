@@ -46,17 +46,7 @@ cat > /usr/local/hadoop-2.8.5/etc/hadoop/yarn-site.xml <<EOF
     <name>yarn.nodemanager.vmem-pmem-ratio</name>
     <value>5</value>
   </property>
-
- <property>
-    <name>yarn.nodemanager.recovery.enabled</name>
-    <value>true</value>
-  </property>
-
-  <property>
-    <name>yarn.nodemanager.recovery.supervised</name>
-    <value>true</value>
-  </property>
-
+  
   <property>
     <name>yarn.scheduler.increment-allocation-mb</name>
     <value>32</value>
