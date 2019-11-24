@@ -155,6 +155,7 @@ cat > /usr/local/hadoop-2.8.5/etc/hadoop/yarn-site.xml <<EOF
 EOF
 
 cat > /usr/local/hadoop-2.8.5/etc/hadoop/capacity-scheduler.xml <<EOF
+<configuration>
 
   <property>
     <name>yarn.scheduler.capacity.maximum-applications</name>
