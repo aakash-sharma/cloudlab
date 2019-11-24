@@ -31,64 +31,130 @@ cat > /usr/local/hadoop-2.8.5/etc/hadoop/yarn-site.xml <<EOF
     <name>yarn.resourcemanager.hostname</name>
     <value>resourcemanager</value>
   </property>
+
   <property>
     <name>yarn.resourcemanager.webapp.address</name>
     <value>0.0.0.0:8088</value>
   </property>
-  <property>
-    <name>yarn.resourcemanager.scheduler.class</name>
-    <value>org.apache.hadoop.yarn.server.resourcemanager.scheduler.capacity.CapacityScheduler</value>
-    <!--<value>org.apache.hadoop.yarn.server.resourcemanager.scheduler.fair.FairScheduler</value>-->
-  </property>
-  <property>
-    <name>yarn.scheduler.fair.user-as-default-queue</name>
-    <value>True</value>
-  </property>
-  <property>
-    <name>org.apache.hadoop.yarn.server.resourcemanager.scheduler.drf.SchedulingPolicy</name>
-    <value>True</value>
-  </property>
+
   <property>
     <name>yarn.nodemanager.aux-services</name>
     <value>mapreduce_shuffle</value>
   </property>
+
+  <property>
+    <name>yarn.nodemanager.vmem-pmem-ratio</name>
+    <value>5</value>
+  </property>
+
+ <property>
+    <name>yarn.nodemanager.recovery.enabled</name>
+    <value>true</value>
+  </property>
+
+  <property>
+    <name>yarn.nodemanager.recovery.supervised</name>
+    <value>true</value>
+  </property>
+
+  <property>
+    <name>yarn.scheduler.increment-allocation-mb</name>
+    <value>32</value>
+  </property>
+
+  <property>
+    <name>yarn.resourcemanager.nodemanagers.heartbeat-interval-ms</name>
+    <value>250</value>
+  </property>
+
+  <property>
+    <name>yarn.resourcemanager.client.thread-count</name>
+    <value>64</value>
+  </property>
+
+  <property>
+    <name>yarn.nodemanager.resource.cpu-vcores</name>
+    <value>8</value>
+  </property>
+
+  <property>
+    <name>yarn.resourcemanager.resource-tracker.client.thread-count</name>
+    <value>64</value>
+  </property>
+
+  <property>
+    <name>yarn.nodemanager.container-manager.thread-count</name>
+    <value>64</value>
+  </property>
+
+  <property>
+    <name>yarn.resourcemanager.scheduler.client.thread-count</name>
+    <value>64</value>
+  </property>
+
+  <property>
+    <name>yarn.scheduler.maximum-allocation-mb</name>
+    <value>24576</value>
+  </property>
+
+  <property>
+    <name>yarn.nodemanager.localizer.client.thread-count</name>
+    <value>20</value>
+  </property>
+
+  <property>
+    <name>yarn.nodemanager.localizer.fetch.thread-count</name>
+    <value>20</value>
+  </property>
+
+  <property>
+    <name>yarn.nodemanager.resource.memory-mb</name>
+    <value>24576</value>
+  </property>
+
+  <property>
+    <name>yarn.scheduler.maximum-allocation-vcores</name>
+    <value>128</value>
+  </property>
+
   <property>
     <name>yarn.nodemanager.resource.percentage-physical-cpu-limit</name>
     <value>90</value>
   </property>
+
   <property>
     <name>yarn.scheduler.minimum-allocation-mb</name>
-    <value>2048</value>
+    <value>32</value>
   </property>
-  <property>
-    <name>yarn.scheduler.minimum-allocation-vcores</name>
-    <value>2</value>
-  </property>
+
   <property>
     <name>yarn.resourcemanager.bind-host</name>
     <value>0.0.0.0</value>
   </property>
+  
   <property>
     <name>yarn.nodemanager.bind-host</name>
     <value>0.0.0.0</value>
   </property>
+
   <property>
     <name>yarn.timeline-service.bind-host</name>
     <value>0.0.0.0</value>
   </property>
+
   <property>
     <name>yarn.log-aggregation-enable</name>
     <value>true</value>
   </property>
-<!--  <property>
-    <name>yarn.scheduler.fair.allocation.file</name>
-    <value>mapred-queues.xml</value>
-  </property> -->
+
+  <property>
+    <name>yarn.timeline-service.enabled</name>
+    <value>true</value>
+  </property>
+
 EOF
-#fi
 
 cat > /usr/local/hadoop-2.8.5/etc/hadoop/capacity-scheduler.xml <<EOF
-<configuration>
 
   <property>
     <name>yarn.scheduler.capacity.maximum-applications</name>
@@ -100,7 +166,7 @@ cat > /usr/local/hadoop-2.8.5/etc/hadoop/capacity-scheduler.xml <<EOF
 
   <property>
     <name>yarn.scheduler.capacity.maximum-am-resource-percent</name>
-    <value>0.2</value>
+    <value>0.5</value>
     <description>
       Maximum percent of resources in the cluster which can be used to run
       application masters i.e. controls number of concurrent running
@@ -110,7 +176,7 @@ cat > /usr/local/hadoop-2.8.5/etc/hadoop/capacity-scheduler.xml <<EOF
 
   <property>
     <name>yarn.scheduler.capacity.resource-calculator</name>
-    <value>org.apache.hadoop.yarn.util.resource.DominantResourceCalculator</value>
+    <value>org.apache.hadoop.yarn.util.resource.DefaultResourceCalculator</value>
     <description>
       The ResourceCalculator implementation to be used to compare
       Resources in the scheduler.
@@ -119,8 +185,6 @@ cat > /usr/local/hadoop-2.8.5/etc/hadoop/capacity-scheduler.xml <<EOF
       multi-dimensional resources such as Memory, CPU etc.
     </description>
   </property>
-
-<!-- configuration of queue root -->
 
   <property>
     <name>yarn.scheduler.capacity.root.queues</name>
@@ -131,50 +195,25 @@ cat > /usr/local/hadoop-2.8.5/etc/hadoop/capacity-scheduler.xml <<EOF
   </property>
 
   <property>
-    <name>yarn.scheduler.capacity.root.capacity</name>
-    <value>100</value>
-  </property>
-
-  <property>
-    <name>yarn.scheduler.capacity.root.maximum-capacity</name>
-    <value>100</value>
-  </property>
-
-  <property>
-    <name>yarn.scheduler.capacity.root.accessible-node-labels</name>
-    <value>*</value>
-  </property>
-
-  <property>
-    <name>yarn.scheduler.capacity.root.accessible-node-labels.X.capacity</name>
-    <value>100</value>
-  </property>
-
-  <property>
-    <name>yarn.scheduler.capacity.root.accessible-node-labels.X.maximum-capacity</name>
-    <value>100</value>
-  </property>
-
-  <property>
-    <name>yarn.scheduler.capacity.root.accessible-node-labels.Y.capacity</name>
-    <value>100</value>
-  </property>
-
-  <property>
-    <name>yarn.scheduler.capacity.root.accessible-node-labels.Y.maximum-capacity</name>
-    <value>100</value>
-  </property>
-
-<!-- configuration of queue root.default
--->
-  <property>
     <name>yarn.scheduler.capacity.root.default.capacity</name>
     <value>100</value>
+    <description>Default queue target capacity.</description>
+  </property>
+
+  <property>
+    <name>yarn.scheduler.capacity.root.default.user-limit-factor</name>
+    <value>1</value>
+    <description>
+      Default queue user limit a percentage from 0.0 to 1.0.
+    </description>
   </property>
 
   <property>
     <name>yarn.scheduler.capacity.root.default.maximum-capacity</name>
     <value>100</value>
+    <description>
+      The maximum capacity of the default queue.
+    </description>
   </property>
 
   <property>
@@ -202,51 +241,74 @@ cat > /usr/local/hadoop-2.8.5/etc/hadoop/capacity-scheduler.xml <<EOF
   </property>
 
   <property>
-    <name>yarn.scheduler.capacity.root.default.accessible-node-labels</name>
-    <value>X,Y</value>
-  </property>
-  
-  <property>
-    <name>yarn.scheduler.capacity.root.default.accessible-node-labels.X.capacity</name>
-    <value>100</value>
-  </property>
-
-  <property>
-    <name>yarn.scheduler.capacity.root.default.accessible-node-labels.X.maximum-capacity</name>
-    <value>100</value>
-  </property>
-
-  <property>
-    <name>yarn.scheduler.capacity.root.default.accessible-node-labels.Y.capacity</name>
-    <value>100</value>
-  </property>
-
-  <property>
-    <name>yarn.scheduler.capacity.root.default.accessible-node-labels.Y.maximum-capacity</name>
-    <value>100</value>
-  </property>
-
-  <property>
-    <name>yarn.scheduler.capacity.root.default.user-limit-factor</name>
-    <value>1</value>
+    <name>yarn.scheduler.capacity.node-locality-delay</name>
+    <value>40</value>
     <description>
-      Default queue user limit a percentage from 0.0 to 1.0.
+      Number of missed scheduling opportunities after which the CapacityScheduler
+      attempts to schedule rack-local containers.
+      Typically this should be set to number of nodes in the cluster, By default is setting
+      approximately number of nodes in one rack which is 40.
     </description>
   </property>
 
   <property>
-    <name>yarn.scheduler.capacity.root.default.ordering-policy</name>
-    <value>fair</value>
+    <name>yarn.scheduler.capacity.queue-mappings</name>
+    <value></value>
+    <description>
+      A list of mappings that will be used to assign jobs to queues
+      The syntax for this list is [u|g]:[name]:[queue_name][,next mapping]*
+      Typically this list will be used to map users to queues,
+      for example, u:%user:%user maps all users to queues with the same name
+      as the user.
+    </description>
   </property>
 
   <property>
-    <name>yarn.scheduler.capacity.root.default.ordering-policy.fair.enable-size-based-weight</name>
-    <value>true</value>
+    <name>yarn.scheduler.capacity.queue-mappings-override.enable</name>
+    <value>false</value>
+    <description>
+      If a queue mapping is present, will it override the value specified
+      by the user? This can be used by administrators to place jobs in queues
+      that are different than the one specified by the user.
+      The default is false.
+    </description>
+  </property>
+
+  <property>
+    <name>yarn.scheduler.capacity.per-node-heartbeat.maximum-offswitch-assignments</name>
+    <value>2</value>
+    <description>
+      Controls the number of OFF_SWITCH assignments allowed
+      during a node's heartbeat. Increasing this value can improve
+      scheduling rate for OFF_SWITCH containers. Lower values reduce
+      "clumping" of applications on particular nodes. The default is 1.
+      Legal values are 1-MAX_INT. This config is refreshable.
+    </description>
+  </property>
+
+  <property>
+    <name>yarn.scheduler.capacity.root.accessible-node-labels</name>
+    <value>*</value>
+  </property>
+
+  <property>
+    <name>yarn.scheduler.capacity.root.accessible-node-labels.CORE.capacity</name>
+    <value>100</value>
+  </property>
+
+  <property>
+    <name>yarn.scheduler.capacity.root.default.accessible-node-labels</name>
+    <value>*</value>
+  </property>
+
+  <property>
+    <name>yarn.scheduler.capacity.root.default.accessible-node-labels.CORE.capacity</name>
+    <value>100</value>
   </property>
 
 </configuration>
-
 EOF
+
 
 cat > /usr/local/hadoop-2.8.5/etc/hadoop/mapred-queues.xml <<EOF
 <?xml version="1.0"?>
@@ -338,10 +400,32 @@ elif hostname | grep -q resourcemanager; then
     <name>yarn.node-labels.enabled</name>
     <value>true</value>
   </property>
+
   <property>
     <name>yarn.node-labels.fs-store.root-dir</name>
     <value>file:///users/aakashsh/node-labels</value>
   </property>
+
+  <property>
+    <name>yarn.node-labels.am.default-node-label-expression</name>
+    <value>CORE</value>
+  </property>
+
+  <property>
+    <name>yarn.node-labels.configuration-type</name>
+    <value>distributed</value>
+  </property>
+
+ <property>
+    <name>yarn.nodemanager.node-labels.provider</name>
+    <value>config</value>
+  </property>
+
+  <property>
+    <name>yarn.nodemanager.node-labels.provider.configured-node-partition</name>
+    <value>CORE</value>
+  </property>
+
 </configuration>
 EOF
         sudo -H -u aakashsh bash -c 'mkdir -p /users/aakashsh/node-labels'
