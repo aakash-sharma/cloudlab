@@ -410,11 +410,6 @@ cat > /usr/local/hadoop-2.8.5/etc/hadoop/mapred-site.xml <<EOF
   </property>
 
   <property>
-    <name>mapred.output.committer.class</name>
-    <value>org.apache.hadoop.mapred.DirectFileOutputCommitter</value>
-  </property>
-
-  <property>
     <name>mapreduce.job.reduces</name>
     <value>60</value>
   </property>
