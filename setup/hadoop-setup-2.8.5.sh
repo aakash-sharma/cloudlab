@@ -133,11 +133,6 @@ cat > /usr/local/hadoop-2.8.5/etc/hadoop/yarn-site.xml <<EOF
   </property>
 
   <property>
-    <name>yarn.log-aggregation-enable</name>
-    <value>true</value>
-  </property>
-
-  <property>
     <name>yarn.timeline-service.enabled</name>
     <value>true</value>
   </property>
