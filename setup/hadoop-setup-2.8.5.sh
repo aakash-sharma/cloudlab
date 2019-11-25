@@ -7,6 +7,8 @@ if test -b /dev/sdb && ! grep -q /dev/sdb /etc/fstab; then
     echo "/dev/sdb	/mnt	ext3	defaults	0	0" >> /etc/fstab
 fi
 
+sudo apt-get install -y libsnappy-dev
+
 mkdir /usr/local/hadoop-2.8.5/work
 chown -R aakashsh:scheduler-PG0 /usr/local/hadoop-2.8.5/
 chown -R aakashsh:scheduler-PG0 /mnt/hadoop
