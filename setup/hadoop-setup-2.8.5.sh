@@ -510,6 +510,7 @@ elif hostname | grep -q resourcemanager; then
 </configuration>
 EOF
         sudo -H -u aakashsh bash -c 'mkdir -p /users/aakashsh/node-labels'
+        sudo -H -u aakashsh bash -c 'mkdir -p /users/aakashsh/cpu_stats'
 	sudo chmod 777 /users/aakashsh/node-labels
 	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.8.5/sbin/yarn-daemon.sh start resourcemanager'
 	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.8.5/sbin/mr-jobhistory-daemon.sh start historyserver'
