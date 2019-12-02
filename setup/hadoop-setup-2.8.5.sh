@@ -527,7 +527,6 @@ EOF
 	sudo chown -R aakashsh:scheduler-PG0 /mnt/hadoop
 	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.8.5/sbin/yarn-daemon.sh start nodemanager'
 	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.8.5/sbin/hadoop-daemon.sh start datanode'
-	service zabbix-agent start
 fi
 
 if hostname | grep -q namenode; then
