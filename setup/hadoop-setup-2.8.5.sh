@@ -514,11 +514,7 @@ EOF
 	sudo chmod 777 /users/aakashsh/node-labels
 	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.8.5/sbin/yarn-daemon.sh start resourcemanager'
 	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.8.5/sbin/mr-jobhistory-daemon.sh start historyserver'
-	sudo -H -u aakashsh bash -c 'cp -pr /proj/scheduler-PG0/aakash/dr-elephant-2.1.7.zip /users/aakashsh/'
-	cd /users/aakashsh/
-	sudo -H -u aakashsh bash -c 'unzip /users/aakashsh/dr-elephant-2.1.7.zip'
-	sudo PATH=/usr/local/hadoop-2.8.5/bin:$PATH /users/aakashsh/dr-elephant-2.1.7/bin/start.sh /users/aakashsh/dr-elephant-2.1.7/app-conf/
-	#sudo -H -u aakashsh bash -c 'PATH=/usr/local/hadoop-2.8.5/bin:$PATH /users/aakashsh/dr-elephant-2.1.7/bin/start.sh /users/aakashsh/dr-elephant-2.1.7/app-conf/'
+	sudo -H -u aakashsh bash -c 'nohup /proj/scheduler-PG0/prometheus-2.14.0.linux-amd64/prometheus &'
 else
 	cat >> /usr/local/hadoop-2.8.5/etc/hadoop/yarn-site.xml <<EOF
 </configuration>
@@ -527,6 +523,7 @@ EOF
 	sudo chown -R aakashsh:scheduler-PG0 /mnt/hadoop
 	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.8.5/sbin/yarn-daemon.sh start nodemanager'
 	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.8.5/sbin/hadoop-daemon.sh start datanode'
+	sudo -H -u aakashsh bash -c 'nohup /proj/scheduler-PG0/node_exporter-0.18.1.linux-amd64/node_exporter &'
 fi
 
 if hostname | grep -q namenode; then
