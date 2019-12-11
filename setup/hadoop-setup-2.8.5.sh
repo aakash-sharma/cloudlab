@@ -327,14 +327,14 @@ cat > /usr/local/hadoop-2.8.5/etc/hadoop/mapred-queues.xml <<EOF
 EOF
 
 cat >> /usr/local/hadoop-2.8.5/etc/hadoop/hadoop-env.sh <<EOF
-export HADOOP_OPTS="$HADOOP_OPTS -server -XX:OnOutOfMemoryError='kill -9 %p'"
+export HADOOP_OPTS="$HADOOP_OPTS -XX:+ExitOnOutOfMemoryError"
 export HADOOP_NAMENODE_HEAPSIZE=1843
 export HADOOP_DATANODE_HEAPSIZE=778
 export HADOOP_JOB_HISTORYSERVER_HEAPSIZE=2416
 EOF
 
 cat >> /usr/local/hadoop-2.8.5/etc/hadoop/yarn-env.sh <<EOF
-export YARN_OPTS="$YARN_OPTS -XX:OnOutOfMemoryError='kill -9 %p'"
+export YARN_OPTS="$YARN_OPTS -XX:+ExitOnOutOfMemoryError"
 export YARN_PROXYSERVER_HEAPSIZE=2416
 export YARN_NODEMANAGER_HEAPSIZE=2048
 export YARN_RESOURCEMANAGER_HEAPSIZE=2416
