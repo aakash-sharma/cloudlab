@@ -9,10 +9,13 @@ fi
 
 sudo apt-get install -y libsnappy-dev
 
-mkdir /usr/local/hadoop-2.8.5/work
 chown -R aakashsh:scheduler-PG0 /usr/local/hadoop-2.8.5/
 chown -R aakashsh:scheduler-PG0 /mnt/hadoop
 chown -R aakashsh:scheduler-PG0 /mnt/data
+
+sudo -H -u aakashsh bash -c 'mkdir /usr/local/hadoop-2.8.5/work'
+sudo -H -u aakashsh bash -c 'mkdir /tmp/spark-events'
+sudo -H -u aakashsh bash -c 'cp /proj/scheduler-PG0/yarn-site.xml /usr/local/hadoop-2.8.5/etc/hadoop'
 
 hostname=`hostname | cut -d "." -f 1`
 hostname $hostname
@@ -515,6 +518,11 @@ EOF
 	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.8.5/sbin/yarn-daemon.sh start resourcemanager'
 	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.8.5/sbin/mr-jobhistory-daemon.sh start historyserver'
 	sudo -H -u aakashsh bash -c 'nohup /proj/scheduler-PG0/prometheus-2.14.0.linux-amd64/prometheus &'
+	apt-get update
+	apt-get -y install python3-pip
+	sudo -H -u aakashsh bash -c 'pip3 install wget'
+        sudo -H -u aakashsh bash -c 'pip3 install xlwt'
+	sudo -H -u aakashsh bash -c 'pip3 install xlrd'
 else
 	cat >> /usr/local/hadoop-2.8.5/etc/hadoop/yarn-site.xml <<EOF
 </configuration>
