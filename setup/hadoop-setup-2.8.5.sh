@@ -15,7 +15,7 @@ chown -R aakashsh:scheduler-PG0 /mnt/data
 
 sudo -H -u aakashsh bash -c 'mkdir /usr/local/hadoop-2.8.5/work'
 sudo -H -u aakashsh bash -c 'mkdir /tmp/spark-events'
-sudo -H -u aakashsh bash -c 'cp /proj/scheduler-PG0/yarn-site.xml /usr/local/hadoop-2.8.5/etc/hadoop'
+sudo -H -u aakashsh bash -c 'cp /proj/scheduler-PG0/spark-2.4.4-bin-without-hadoop/yarn/spark-2.4.4-yarn-shuffle.jar /usr/local/hadoop-2.8.5//share/hadoop/yarn/lib/'
 
 hostname=`hostname | cut -d "." -f 1`
 hostname $hostname
@@ -44,7 +44,12 @@ cat > /usr/local/hadoop-2.8.5/etc/hadoop/yarn-site.xml <<EOF
 
   <property>
     <name>yarn.nodemanager.aux-services</name>
-    <value>mapreduce_shuffle</value>
+    <value>mapreduce_shuffle,spark_shuffle</value>
+  </property>
+
+  <property>
+    <name>yarn.nodemanager.aux-services.spark_shuffle.class</name>
+    <value>org.apache.spark.network.yarn.YarnShuffleService</value>
   </property>
 
   <property>
@@ -322,14 +327,17 @@ cat > /usr/local/hadoop-2.8.5/etc/hadoop/mapred-queues.xml <<EOF
 EOF
 
 cat >> /usr/local/hadoop-2.8.5/etc/hadoop/hadoop-env.sh <<EOF
-export HADOOP_NAMENODE_HEAPSIZE=3481
-export HADOOP_DATANODE_HEAPSIZE=1105
-export HADOOP_JOB_HISTORYSERVER_HEAPSIZE=2744
+export HADOOP_OPTS="$HADOOP_OPTS -server -XX:OnOutOfMemoryError='kill -9 %p'"
+export HADOOP_NAMENODE_HEAPSIZE=1843
+export HADOOP_DATANODE_HEAPSIZE=778
+export HADOOP_JOB_HISTORYSERVER_HEAPSIZE=2416
 EOF
 
-cat >> /usr/local/hadoop-2.8.5/etc/hadoop/hadoop-env.sh <<EOF
+cat >> /usr/local/hadoop-2.8.5/etc/hadoop/yarn-env.sh <<EOF
+export YARN_OPTS="$YARN_OPTS -XX:OnOutOfMemoryError='kill -9 %p'"
+export YARN_PROXYSERVER_HEAPSIZE=2416
 export YARN_NODEMANAGER_HEAPSIZE=2048
-export YARN_RESOURCEMANAGER_HEAPSIZE=2744
+export YARN_RESOURCEMANAGER_HEAPSIZE=2416
 EOF
 
 cat > /usr/local/hadoop-2.8.5/etc/hadoop/mapred-site.xml <<EOF
