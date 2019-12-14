@@ -172,7 +172,7 @@ cat > /usr/local/hadoop-2.8.5/etc/hadoop/capacity-scheduler.xml <<EOF
 
   <property>
     <name>yarn.scheduler.capacity.resource-calculator</name>
-    <value>org.apache.hadoop.yarn.util.resource.DefaultResourceCalculator</value>
+    <value>org.apache.hadoop.yarn.util.resource.DominantResourceCalculator</value>
     <description>
       The ResourceCalculator implementation to be used to compare
       Resources in the scheduler.
