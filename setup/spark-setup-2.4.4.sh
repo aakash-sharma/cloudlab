@@ -490,6 +490,7 @@ EOF
 cat >> /users/aakashsh/.bashrc <<EOF
 export HADOOP_HOME=/usr/local/hadoop-2.8.5/
 export PATH=\${HADOOP_HOME}/bin:\${PATH}
+EOF
 
 if hostname | grep -q slave0; then
 
