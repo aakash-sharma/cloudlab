@@ -329,7 +329,7 @@ cat > /usr/local/hadoop-2.8.5/etc/hadoop/mapred-site.xml <<EOF
   <property>
     <name>mapreduce.cluster.local.dir</name>
     <value>/mnt/data</value>
-  </prsudo -H -u aakashsh bash -c '/usr/local/hadoop-2.8.5/sbin/hadoop-daemon.sh start datanode'operty>
+  </property>
   
   <property>
     <name>mapreduce.jobhistory.bind-host</name>
