@@ -7,11 +7,11 @@ if test -b /dev/sdb && ! grep -q /dev/sdb /etc/fstab; then
 #    echo "/dev/sdb	/mnt	ext3	defaults	0	0" >> /etc/fstab
 fi
 
+mkdir /mnt/data
+mkdir /mnt/hadoop
 
-sudo -H -u aakashsh bash -c 'mkdir /mnt/data'
-sudo -H -u aakashsh bash -c 'mkdir /mnt/hadoop'
-sudo -H -u aakashsh bash -c 'mkdir /usr/local/hadoop-2.8.5/work'
-sudo -H -u aakashsh bash -c 'mkdir /tmp/spark-events'
+chown -R aakashsh:scheduler-PG0 /mnt/hadoop
+chown -R aakashsh:scheduler-PG0 /mnt/data
 
 hostname=`hostname | cut -d "." -f 1`
 hostname $hostname
@@ -329,7 +329,7 @@ cat > /usr/local/hadoop-2.8.5/etc/hadoop/mapred-site.xml <<EOF
   <property>
     <name>mapreduce.cluster.local.dir</name>
     <value>/mnt/data</value>
-  </property>
+  </prsudo -H -u aakashsh bash -c '/usr/local/hadoop-2.8.5/sbin/hadoop-daemon.sh start datanode'operty>
   
   <property>
     <name>mapreduce.jobhistory.bind-host</name>
@@ -452,15 +452,53 @@ cat > /usr/local/hadoop-2.8.5/etc/hadoop/mapred-site.xml <<EOF
 </configuration>
 EOF
 
+cat > /usr/local/hadoop-2.8.5/etc/hadoop/core-site.xml <<EOF
+<configuration>
+  <property>
+    <name>fs.defaultFS</name>
+    <value>hdfs://127.0.0.1:9000/</value>
+  </property>
+  <property>
+    <name>hadoop.tmp.dir</name>
+    <value>/mnt/data</value>
+    <final>true</final>
+  </property>
+</configuration>
+EOF
 
-if hostname | grep -q namenode; then
+cat > /usr/local/hadoop-2.8.5/etc/hadoop/hdfs-site.xml <<EOF
+<configuration>
+  <property>
+    <name>dfs.replication</name>
+    <value>1</value>
+  </property>
+  <property>
+    <name>dfs.datanode.dns.interface</name>
+    <value>enp94s0f0</value>
+  </property>
+  <property>
+    <name>dfs.datanode.name.dir</name>
+    <value>/mnt/hadoop/nameNode</value>
+  </property>
+  <property>
+    <name>dfs.datanode.data.dir</name>
+    <value>/mnt/hadoop/dataNode</value>
+  </property>
+</configuration>
+EOF
+
+
+if hostname | grep -q slave0; then
+
 	cat >> /usr/local/hadoop-2.8.5/etc/hadoop/yarn-site.xml <<EOF
 </configuration>
 EOF
 	sudo -H -u aakashsh bash -c 'mkdir -p /mnt/hadoop/nameNode/'
 	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.8.5/bin/hdfs namenode -format'
-    	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.8.5/sbin/hadoop-daemon.sh start namenode'
-elif hostname | grep -q resourcemanager; then
+   	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.8.5/sbin/hadoop-daemon.sh start namenode'
+
+elif hostname | grep -q slave1; then
+
 	cat >> /usr/local/hadoop-2.8.5/etc/hadoop/yarn-site.xml <<EOF
   <property>
     <name>yarn.node-labels.enabled</name>
@@ -494,29 +532,27 @@ elif hostname | grep -q resourcemanager; then
 
 </configuration>
 EOF
-        sudo -H -u aakashsh bash -c 'mkdir -p /users/aakashsh/node-labels'
-        sudo -H -u aakashsh bash -c 'mkdir -p /users/aakashsh/cpu_stats'
+
+    sudo -H -u aakashsh bash -c 'mkdir -p /users/aakashsh/node-labels'
+    sudo -H -u aakashsh bash -c 'mkdir -p /users/aakashsh/cpu_stats'
 	sudo chmod 777 /users/aakashsh/node-labels
 	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.8.5/sbin/yarn-daemon.sh start resourcemanager'
 	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.8.5/sbin/mr-jobhistory-daemon.sh start historyserver'
-	sudo -H -u aakashsh bash -c 'nohup /proj/scheduler-PG0/prometheus-2.14.0.linux-amd64/prometheus &'
-	apt-get update
-	apt-get -y install python3-pip
-	sudo -H -u aakashsh bash -c 'pip3 install wget'
-        sudo -H -u aakashsh bash -c 'pip3 install xlwt'
-	sudo -H -u aakashsh bash -c 'pip3 install xlrd'
+#	sudo -H -u aakashsh bash -c 'nohup /proj/scheduler-PG0/prometheus-2.14.0.linux-amd64/prometheus &'
 else
+
 	cat >> /usr/local/hadoop-2.8.5/etc/hadoop/yarn-site.xml <<EOF
 </configuration>
 EOF
-	sudo -H -u aakashsh bash -c 'mkdir -p /mnt/hadoop/dataNode'
-	sudo chown -R aakashsh:scheduler-PG0 /mnt/hadoop
-	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.8.5/sbin/yarn-daemon.sh start nodemanager'
-	sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.8.5/sbin/hadoop-daemon.sh start datanode'
-	sudo -H -u aakashsh bash -c 'nohup /proj/scheduler-PG0/node_exporter-0.18.1.linux-amd64/node_exporter &'
+
 fi
 
-if hostname | grep -q namenode; then
+sudo -H -u aakashsh bash -c 'mkdir -p /mnt/hadoop/dataNode'
+sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.8.5/sbin/yarn-daemon.sh start nodemanager'
+sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.8.5/sbin/hadoop-daemon.sh start datanode'
+#sudo -H -u aakashsh bash -c 'nohup /proj/scheduler-PG0/node_exporter-0.18.1.linux-amd64/node_exporter &'
+
+if hostname | grep -q slave0; then
     sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.8.5/bin/hdfs dfs -mkdir /user'
     sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.8.5/bin/hdfs dfs -mkdir /tmp'
     sudo -H -u aakashsh bash -c '/usr/local/hadoop-2.8.5/bin/hdfs dfs -mkdir /tmp/hadoop-yarn'
