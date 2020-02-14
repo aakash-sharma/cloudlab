@@ -22,7 +22,7 @@ cat > /usr/local/hadoop-2.8.5/etc/hadoop/yarn-site.xml <<EOF
 <configuration>
   <property>
     <name>yarn.resourcemanager.hostname</name>
-    <value>resourcemanager</value>
+    <value>slave1</value>
   </property>
 
   <property>
@@ -456,7 +456,7 @@ cat > /usr/local/hadoop-2.8.5/etc/hadoop/core-site.xml <<EOF
 <configuration>
   <property>
     <name>fs.defaultFS</name>
-    <value>hdfs://127.0.0.1:9000/</value>
+    <value>hdfs://slave0:9000/</value>
   </property>
   <property>
     <name>hadoop.tmp.dir</name>
@@ -487,6 +487,9 @@ cat > /usr/local/hadoop-2.8.5/etc/hadoop/hdfs-site.xml <<EOF
 </configuration>
 EOF
 
+cat >> /users/aakashsh/.bashrc <<EOF
+export HADOOP_HOME=/usr/local/hadoop-2.8.5/
+export PATH=\${HADOOP_HOME}/bin:\${PATH}
 
 if hostname | grep -q slave0; then
 
