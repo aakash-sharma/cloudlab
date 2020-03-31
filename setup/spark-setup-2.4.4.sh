@@ -13,6 +13,10 @@ fi
 if test -b /dev/sdc && ! grep -q /dev/sdc /etc/fstab; then
     mke2fs -F -j /dev/sdc
     mount /dev/sdc /mnt/data
+
+elif test -b /dev/sda4 && ! grep -q /dev/sda4 /etc/fstab; then
+	mke2fs -F -j /dev/sda4
+	mount /dev/sda4 /mnt/data
 fi
 
 
