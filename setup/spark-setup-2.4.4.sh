@@ -1,21 +1,26 @@
 #!/bin/sh
 
+mkdir /mnt/data
+mkdir /mnt/hadoop
+chmod -R 755 /mnt
+
 if test -b /dev/sdb && ! grep -q /dev/sdb /etc/fstab; then
     mke2fs -F -j /dev/sdb
-    mount /dev/sdb /mnt
-    chmod 755 /mnt
+    mount /dev/sdb /mnt/hadoop
 #    echo "/dev/sdb	/mnt	ext3	defaults	0	0" >> /etc/fstab
 fi
 
-chmod 755 /mnt
-mkdir /mnt/data
-mkdir /mnt/hadoop
+if test -b /dev/sdc && ! grep -q /dev/sdc /etc/fstab; then
+    mke2fs -F -j /dev/sdc
+    mount /dev/sdc /mnt/data
+fi
 
-mke2fs -F -j /dev/sdb
-mount /dev/sdb /mnt/hadoop
 
-mke2fs -F -j /dev/sdc
-mount /dev/sdc /mnt/data
+#mke2fs -F -j /dev/sdb
+#mount /dev/sdb /mnt/hadoop
+
+#mke2fs -F -j /dev/sdc
+#mount /dev/sdc /mnt/data
 
 chown -R aakashsh:scheduler-PG0 /mnt/hadoop
 chown -R aakashsh:scheduler-PG0 /mnt/data
